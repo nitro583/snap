@@ -2,11 +2,8 @@
   <div class="page">
     <h1>Todo list</h1>
     <ul>
-      <li
-        v-for="(todo,index) in todos"
-        v-bind:key="todo.id"
-      >
-        {{ todo }}
+      <li v-for="(todo, index) in todos" v-bind:key="todo.id">
+        {{ todo.todo }}
         <button v-on:click="deleteTodo(index)">Delete</button>
       </li>
     </ul>
@@ -20,6 +17,9 @@
 </template>
 <script>
 export default {
+  async fetch({ store }) {
+    await store.dispatch("getTodos");
+  },
   data() {
     return {
       todo: "",
@@ -27,19 +27,19 @@ export default {
   },
   computed: {
     todos() {
-      return this.$store.getters['todos']
-    }
+      return this.$store.getters["todos"];
+    },
   },
   methods: {
     submitTodo() {
       if (this.todo) {
-        this.$store.commit('submitTodo',this.todo);
+        this.$store.dispatch("submitTodo", this.todo);
         this.todo = "";
       }
     },
     deleteTodo(index) {
       console.log(index);
-      this.$store.commit('deleteTodo',index);
+      this.$store.dispatch("deleteTodo", this.todos[index].id);
     },
   },
 };
