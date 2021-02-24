@@ -48,6 +48,18 @@ export const actions = {
     console.log('削除しました')
     })
   },
+  updateTodo({
+    dispatch
+  }, id) {
+    firebase.firestore().collection('todos').doc(id)
+    .update({
+      todo: todo,
+    })
+    .then(() => {
+      dispatch('getTodos', todo)
+      console.log(todo, res.id)
+    })
+  },
 
 }
 

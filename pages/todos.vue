@@ -41,6 +41,12 @@ export default {
       console.log(index);
       this.$store.dispatch("deleteTodo", this.todos[index].id);
     },
+    updateTodo() {
+      if (this.todo) {
+        this.$store.dispatch("updateTodo", this.todo);
+        this.todo = "";
+      }
+    }
   },
 };
 </script>
