@@ -2,7 +2,10 @@
   <div class="login">
     <!-- v-if='!user'をdivに追加するとログインしたときは見えなくなる。 -->
     <h1 class="text">ログイン</h1>
-    <p class="text">{{ user }}</p>
+    <p class="text">Your Email: {{ user.email }}</p>
+    <p class="text">Your Email: {{ user.name }}</p>
+    <input v-model="updateName" type="text" />
+    <button @click="update">update</button>
     <form class="form" @submit.prevent>
       <label class="label"
         >email
@@ -15,6 +18,9 @@
       </label>
 
       <button class="button" type="submit" @click="login">Login</button>
+      <button class="button" type="submit" @click="loginGoogle">
+        Googleアカウントでログイン
+      </button>
     </form>
   </div>
 </template>
@@ -29,6 +35,7 @@ export default {
     return {
       email: "",
       password: "",
+      updateName: "",
     };
   },
   methods: {
@@ -36,13 +43,25 @@ export default {
       console.log("methods発火");
       this.$store.dispatch("login/login", {
         email: this.email,
-        password: this.password
+        password: this.password,
       });
 
       if (this.$store.getters["login/user"]) {
         console.log("loginしてトップへ");
         this.$router.push("/");
       }
+    },
+    loginGoogle() {
+      console.log("googleLogin発火");
+      this.$store.dispatch("login/loginGoogle", {});
+
+      if (this.$store.getters["login/user"]) {
+        console.log("loginしてトップへ");
+        this.$router.push("/");
+      }
+    },
+    update(updateName) {
+      this.$store.dispatch("login/update", this.updateName);
     },
   },
 };
