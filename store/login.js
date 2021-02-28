@@ -36,7 +36,7 @@ export const actions = {
 
     })
     .catch((error)=>{
-      console.log(error)
+      alert(error)
     })
   },
   loginGoogle({dispatch}){
@@ -46,14 +46,16 @@ export const actions = {
   .then(function(result) {
     dispatch('checkLogin')
   }).catch(function(error){
-    console.log(error)
+    alert(error)
   })
   },
   checkLogin({commit}) {
+    const that = this
     firebase.auth().onAuthStateChanged(function (user){
       if(user){
         console.log('checklogin発火')
         commit('getData',{uid: user.uid , email: user.email,name:user.displayName})
+        that.$router.push("/");
       }
     })
   },
@@ -65,17 +67,17 @@ export const actions = {
       dispatch('update',payload.name)
       dispatch('checkLogin')
     }).catch(function(error){
-      console.log({'code':error.code,'message':error.message})
+      alert(error)
     })
   },
   logOut({commit}) {
     firebase.auth().signOut()
     .then(()=>{
-      console.log('ログアウトしました')
       commit('logOut')
+      console.log('ログアウトしました')
     })
     .catch((error)=> {
-      console.log(error)
+      alert(error)
     })
   },
 }

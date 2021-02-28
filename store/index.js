@@ -43,22 +43,22 @@ export const actions = {
     dispatch
   }, id) {
     firebase.firestore().collection('todos').doc(id).delete()
-    .then((res) => {
-    dispatch('getTodos')
-    console.log('削除しました')
-    })
+      .then((res) => {
+        dispatch('getTodos')
+        console.log('削除しました')
+      })
   },
   updateTodo({
     dispatch
   }, id) {
     firebase.firestore().collection('todos').doc(id)
-    .update({
-      todo: todo,
-    })
-    .then(() => {
-      dispatch('getTodos', todo)
-      console.log(todo, res.id)
-    })
+      .update({
+        todo: todo,
+      })
+      .then(() => {
+        dispatch('getTodos', todo)
+        console.log(todo, res.id)
+      })
   },
 
 }
