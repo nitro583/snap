@@ -12,7 +12,8 @@
     "@nuxtjs/axios": "^5.12.5",
     "core-js": "^3.8.3",
     "firebase": "^8.2.7",
-    "nuxt": "^2.14.12"
+    "nuxt": "^2.14.12",
+    "vee-validate": "^3.4.5"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.3"
