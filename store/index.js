@@ -2,19 +2,25 @@ import firebase from '@/plugins/firebase'
 
 export const state = () => ({
   todos: [],
+  comments:[],
+  thumbnail:[],
 })
 
 export const getters = {
   todos: state => {
     return state.todos
   },
+  thumbnail: state => {
+    return state.thumbnail
+  }
 }
 
 export const actions = {
   getTodos({
     commit
-  }) {
-    firebase.firestore().collection('todos').orderBy("todo", "asc").get()
+  },todo) {
+    firebase.firestore().collection('todos').orderBy("todo", "asc")
+    .get()
       .then((res) => {
         const todos = []
         res.forEach(x => {
@@ -26,12 +32,13 @@ export const actions = {
   },
   submitTodo({
     dispatch
-  }, todo) {
+  }, {todo:todo,comment:comment}) {
     firebase.firestore().collection('todos').add({})
       .then((res) => {
         firebase.firestore().collection('todos').doc(res.id)
           .set({
             todo: todo,
+            comment: comment,
             id: res.id,
           }).then(() => {
             dispatch('getTodos', todo)
@@ -60,6 +67,23 @@ export const actions = {
         console.log(todo, res.id)
       })
   },
+  submitImg({context},image){
+    let storage = firebase.storage()
+    let storageRef = storage.ref().child(image.name)
+    storageRef.put(image)
+    .then(res=> console.log(res))
+    .catch(error => console.log(error))
+    
+  },
+  getImg({commit},image){
+    let storage = firebase.storage()
+    let storageRef = storage.ref().child(image.name)
+    storageRef.getDownloadURL()
+    .then(res => {
+      console.log(res)
+      commit('getData',res)
+    })
+  }
 
 }
 
@@ -70,4 +94,7 @@ export const mutations = {
   deleteTodo(state, index) {
     state.todos.splice(index, 1)
   },
+  getData(state,image){
+    state.thumbnail = image
+  }
 }
