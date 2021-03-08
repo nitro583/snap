@@ -1,24 +1,26 @@
 <template>
   <div class="page">
-    <h1>Todo list</h1>
-    <ul>
-      <li v-for="(todo, index) in todos" v-bind:key="todo.id">
-        {{ todo.todo }}
-        {{ todo.comment }}
-        <img :src='todo.imgUrl' alt="">
-        <button v-on:click="deleteTodo(index)">Delete</button>
-      </li>
-    </ul>
-    <div class="inputform">
+    <h1>Dash board</h1>
+      <div v-for="(todo, index) in todos" v-bind:key="todo.id">
+        <div><img :src='todo.imgUrl' alt=""></div>
+       <div>
+        <p>Posted at {{todo.date.toDate() | moment}} Photo by {{todo.author}}</p>
+        <p>{{ todo.todo }}
+          </p> 
+          <p>Location:{{ todo.comment }}</p>
+        
+       </div>
+        <button v-on:click="deleteTodo(index)" v-if= 'todo.uid === user.uid'>Delete</button>
+      </div>
+    <div class="inputform" v-if='user'>
       <form v-on:submit.prevent="submitTodo">
         <input type="file" accept="img/*" @change="changeImg" v-if="show" />
-        <input v-model="todo" type="text" placeholder="Add a Todo" />
-        <input v-model="comment" type="text" placeholder="Add a comment" />
+        <input v-model="todo" type="text" placeholder="Add a comment" />
+        <input v-model="comment" type="text" placeholder="Add a location" />
         <button tyoe="submit">Add Todo</button>
       </form>
     </div>
     <div>
-      <button v-on:click="getThumbnail">画像取得</button>
     </div>
   </div>
 </template>
@@ -45,8 +47,12 @@ export default {
     getThumbnail () {
       return this.$store.getters['thumbnail']
     },
+     user() {
+      return this.$store.getters["login/user"];
+    },
   },
   methods: {
+
     changeImg(e) {
       this.thumbnail = e.target.files[0];
       console.log(this.thumbnail);
@@ -62,11 +68,13 @@ export default {
       }
     },
     submitTodo() {
-      if (this.todo) {
+      if (this.thumbnail&&this.todo&&this.comment) {
         this.$store.dispatch("submitPost", {
           todo: this.todo,
           comment: this.comment,
-          img: this.thumbnail
+          img: this.thumbnail,
+          author: this.user.name,
+          uid:this.user.uid
         });
         this.thumbnail = "";
         this.todo = "";
@@ -80,7 +88,7 @@ export default {
     getImg() {
       this.$store.dispatch("getImg", this.thumbnail);
     },
-    deleteTodo(index) {
+    deleteTodo(index) { 
       console.log(index);
       this.$store.dispatch("deleteTodo", this.todos[index].id);
     },

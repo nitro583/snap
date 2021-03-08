@@ -20,21 +20,26 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['@/plugins/firebase.js' ,{ src: '@/plugins/vee-validate'}
+  plugins: ['@/plugins/firebase.js' ,{ src: '@/plugins/vee-validate'},
+  { src: '~/plugins/moment-filter', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: ['@nuxtjs/vuetify',
+  buildModules: ['@nuxtjs/vuetify', '@nuxtjs/moment'
   ],
-
+  moment: {
+    // ここにオプションが記述できる
+    locales: ['ja']
+},
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
   ],
+
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},

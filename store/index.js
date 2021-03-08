@@ -19,7 +19,7 @@ export const actions = {
   getTodos({
     commit
   }, todo) {
-    firebase.firestore().collection('todos').orderBy("todo", "asc")
+    firebase.firestore().collection('todos').orderBy("date",'desc')
       .get()
       .then((res) => {
         const todos = []
@@ -107,17 +107,23 @@ export const actions = {
   }, {
     todo: todo,
     comment: comment,
-    img: img
+    img: img,
+    author: author,
+    uid:uid
   }) {
     let imgName = ''
     let imgUrl = ''
+    let date = firebase.firestore.Timestamp.now();
     firebase.firestore().collection('todos').add({})
       .then((res) => {
         firebase.firestore().collection('todos').doc(res.id)
           .set({
             todo: todo,
             comment: comment,
+            author: author,
+            uid: uid,
             id: res.id,
+            date: date,
           }).then(() => {
             dispatch('getTodos', todo)
             console.log(todo, res.id)

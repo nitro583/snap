@@ -5,7 +5,7 @@ export const state = () => ({
 user: {
   uid: '',
   email: '',
-  name:'新規ユーザー',
+  name:'',
   login: false,
 },
 })
