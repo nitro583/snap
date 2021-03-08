@@ -4,14 +4,12 @@
     <ul>
       <li v-for="(todo, index) in todos" v-bind:key="todo.id">
         {{ todo.todo }}
-        {{todo.comment}}
         <button v-on:click="deleteTodo(index)">Delete</button>
       </li>
     </ul>
     <div class="inputform">
       <form v-on:submit.prevent="submitTodo">
         <input v-model="todo" type="text" placeholder="Add a Todo" />
-        <input v-model="comment" type="text" placeholder="Add a comment" />
         <button tyoe="submit">Add Todo</button>
       </form>
     </div>
@@ -25,23 +23,18 @@ export default {
   data() {
     return {
       todo: "",
-      comment: ""
     };
   },
   computed: {
     todos() {
       return this.$store.getters["todos"];
-    }
+    },
   },
   methods: {
     submitTodo() {
       if (this.todo) {
-        this.$store.dispatch("submitTodo", {
-          todo: this.todo,
-          comment: this.comment
-        });
+        this.$store.dispatch("submitTodo", this.todo);
         this.todo = "";
-        this.comment = "";
       }
     },
     deleteTodo(index) {
@@ -54,7 +47,8 @@ export default {
         this.todo = "";
       }
     }
-  }
+  },
 };
 </script>
-<style></style>
+<style>
+</style>
