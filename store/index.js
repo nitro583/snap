@@ -2,17 +2,12 @@ import firebase from '@/plugins/firebase'
 
 export const state = () => ({
   todos: [],
-  comments: [],
-  thumbnail: [],
 })
 
 export const getters = {
   todos: state => {
     return state.todos
   },
-  thumbnail: state => {
-    return state.thumbnail
-  }
 }
 
 export const actions = {
@@ -29,20 +24,15 @@ export const actions = {
         })
         commit('getTodos', todos)
       })
-
   },
   submitTodo({
     dispatch
-  }, {
-    todo: todo,
-    comment: comment
-  }) {
+  }, todo) {
     firebase.firestore().collection('todos').add({})
       .then((res) => {
         firebase.firestore().collection('todos').doc(res.id)
           .set({
             todo: todo,
-            comment: comment,
             id: res.id,
           }).then(() => {
             dispatch('getTodos', todo)
@@ -163,7 +153,4 @@ export const mutations = {
   deleteTodo(state, index) {
     state.todos.splice(index, 1)
   },
-  getData(state, image) {
-    state.thumbnail = image
-  }
 }
