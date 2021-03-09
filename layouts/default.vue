@@ -7,14 +7,15 @@
       </v-navigation-drawer>
 
       <v-app-bar app>
-
         
-        <div><NuxtLink to="/">index</NuxtLink></div>
-        <div><NuxtLink to="register">Signup</NuxtLink></div>
-        <div><NuxtLink to="login">Login</NuxtLink></div>
-        <NuxtLink to="todos">Todos</NuxtLink> 
-        <logOut></logOut>
-        </v-app-bar
+        <div><NuxtLink to="/">Index</NuxtLink></div>
+        <div><NuxtLink to="upload">アップロード</NuxtLink></div>
+        <div><NuxtLink to="post">ぽすと</NuxtLink></div>
+        <div><NuxtLink to="register">新規登録</NuxtLink></div>
+        <div><NuxtLink to="login">ログイン</NuxtLink></div>
+        <NuxtLink to="todos">Todosｓ</NuxtLink>
+
+        <logOut></logOut> </v-app-bar
       ><!-- アプリケーションのコンポーネントに基づいてコンテンツのサイズを決定 --><v-main
         ><!-- アプリケーションに適切なgutterを提供します -->
         
