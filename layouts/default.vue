@@ -7,6 +7,8 @@
       </v-navigation-drawer>
 
       <v-app-bar app>
+
+        
         <div><NuxtLink to="/">index</NuxtLink></div>
         <div><NuxtLink to="register">Signup</NuxtLink></div>
         <div><NuxtLink to="login">Login</NuxtLink></div>
