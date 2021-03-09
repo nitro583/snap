@@ -6,6 +6,8 @@
       </v-navigation-drawer>
 
       <v-app-bar app>
+
+        
         <div><NuxtLink to="/">index</NuxtLink></div>
         <div><NuxtLink to="upload">Upload</NuxtLink></div>
         <div><NuxtLink to="post">Post</NuxtLink></div>
