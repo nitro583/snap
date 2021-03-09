@@ -13,14 +13,9 @@ export const getters = {
 export const actions = {
   getTodos({
     commit
-<<<<<<< HEAD
-  }) {
-    firebase.firestore().collection('todos').orderBy("todo", "asc").get()
-=======
   }, todo) {
     firebase.firestore().collection('todos').orderBy("date",'desc')
       .get()
->>>>>>> auth
       .then((res) => {
         const todos = []
         res.forEach(x => {
@@ -66,8 +61,6 @@ export const actions = {
         console.log(todo, res.id)
       })
   },
-<<<<<<< HEAD
-=======
   submitImg({
     context
   }, image) {
@@ -150,7 +143,6 @@ export const actions = {
 
       })
   }
->>>>>>> auth
 
 }
 
