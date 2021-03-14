@@ -82,14 +82,14 @@ export const actions = {
   //   })
   // },
   getImg({
-    commit
+    context
   }, image) {
     let storage = firebase.storage()
     let storageRef = storage.ref().child(image.name)
     storageRef.getDownloadURL()
       .then(res => {
         console.log(res)
-        commit('getData', res)
+        context.commit('getData', res)
       })
   },
   submitPost({
