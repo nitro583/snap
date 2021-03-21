@@ -11,7 +11,7 @@
         <div><NuxtLink to="/register">Signup</NuxtLink></div>
         <div><NuxtLink to="/login">Login</NuxtLink></div>
         <div>
-          <NuxtLink :to="{ name: 'users-id', params: { id: user.name } }" v-if="user"
+          <NuxtLink v-if="user" :to="{ name: 'users-id', params: { id: user.uid } }"
           >{{user.name}}</NuxtLink
           >
         </div>
@@ -41,6 +41,11 @@
 <script>
 import logOut from "~/components/logOut";
 export default {
+  data(){
+    return{
+
+    }
+  },
   components: {
     logOut
   },
@@ -48,6 +53,9 @@ export default {
     user() {
       return this.$store.getters["login/user"];
     }
+  },
+  methods: {
+   
   }
 };
 </script>

@@ -2,11 +2,19 @@ import firebase from '@/plugins/firebase'
 
 export const state = () => ({
   todos: [],
+  post: [],
+  postComments: [],
 })
 
 export const getters = {
   todos: state => {
     return state.todos
+  },
+  post: state => {
+    return state.post
+  },
+  postComments: state => {
+    return state.postComments
   },
 }
 
@@ -14,7 +22,7 @@ export const actions = {
   getTodos({
     commit
   }, todo) {
-    firebase.firestore().collection('todos').orderBy("date",'desc')
+    firebase.firestore().collection('todos').orderBy("date", 'desc')
       .get()
       .then((res) => {
         const todos = []
@@ -23,7 +31,52 @@ export const actions = {
           console.log(x.data())
         })
         commit('getTodos', todos)
+        console.log('commit')
+
       })
+  },
+  getPost({
+    commit
+  }, postId) {
+    console.log('postID' + postId)
+    firebase.firestore().collection('todos').doc(postId)
+   .get()
+      .then((res) => {
+        const post = []
+        post.push(res.data())
+        console.log(res.data())
+        console.log('取得完了')
+        commit('getPost', post)
+        console.log('commit')
+
+        // firebase.firestore().collection('todos').doc(postId).collection('comments').orderBy("date",'desc')
+        // .get()
+        // .then((res) => {
+        //   const postComments = []
+        //   postComments.push(res.data())
+        //   console.log(res.data())
+        //   console.log('取得完了')
+        //   commit('getPostComment', postComments)
+        //   console.log('commit')
+        // })
+      })
+  },
+  getPostComments({
+    commit
+  }, postId) {
+    console.log('comments取得用postID' + postId)
+    firebase.firestore().collection('todos').doc(postId).collection('comments').orderBy("date", 'desc').get()
+      .then((res) => {
+        const postComments = []
+        res.forEach(x => {
+          postComments.push(x.data())
+          console.log(x.data())
+        })
+        commit('getPostComments', postComments)
+        console.log('commit' + postComments)
+
+      })
+
   },
   submitTodo({
     dispatch
@@ -37,6 +90,31 @@ export const actions = {
           }).then(() => {
             dispatch('getTodos', todo)
             console.log(todo, res.id)
+          })
+      })
+  },
+  submitComment({
+    dispatch
+  }, {
+    comment: comment,
+    author: author,
+    uid: uid,
+    postId: postId
+  }) {
+    let date = firebase.firestore.Timestamp.now();
+    firebase.firestore().collection('todos').doc(postId).collection('comments').add({})
+      .then((res) => {
+        firebase.firestore().collection('todos').doc(postId).collection('comments').doc(res.id)
+          .set({
+            comment: comment,
+            id: res.id,
+            uid: uid,
+            author: author,
+            date: date,
+
+          }).then(() => {
+            dispatch('getPostComments', postId)
+            console.log(comment, res.id)
           })
       })
   },
@@ -99,7 +177,7 @@ export const actions = {
     comment: comment,
     img: img,
     author: author,
-    uid:uid
+    uid: uid
   }) {
     let imgName = ''
     let imgUrl = ''
@@ -149,6 +227,14 @@ export const actions = {
 export const mutations = {
   getTodos(state, todos) {
     state.todos = todos
+  },
+  getPost(state, post) {
+    console.log('post:' + post)
+    state.post = post
+  },
+  getPostComments(state, postComments) {
+    console.log('postComment:' + postComments)
+    state.postComments = postComments
   },
   deleteTodo(state, index) {
     state.todos.splice(index, 1)

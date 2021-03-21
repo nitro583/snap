@@ -5,22 +5,23 @@
         <div><img :src='todo.imgUrl' alt=""></div>
        <div>
         <p>Posted at {{todo.date.toDate() | moment}} Photo by {{todo.author}}</p>
-        <p>{{ todo.todo }}
+        <p>{{ todo.todo }}{{todo.uid}}
           </p> 
           <p>Location:{{ todo.comment }}</p>
         
        </div>
         <button v-on:click="deleteTodo(index)" v-if= 'todo.uid === user.uid'>Delete</button>
+                  <NuxtLink :to="{name: 'users-uid-posts-postDetail' ,params:{uid:todo.uid,postDetail:todo.id}}"
+          >コメントする</NuxtLink
+          >
       </div>
     <div class="inputform" v-if='user'>
       <form v-on:submit.prevent="submitTodo">
         <input type="file" accept="img/*" @change="changeImg" v-if="show" />
         <input v-model="todo" type="text" placeholder="Add a comment" />
         <input v-model="comment" type="text" placeholder="Add a location" />
-        <button tyoe="submit">Add Todo</button>
+        <button type="submit">Add Todo</button>
       </form>
-    </div>
-    <div>
     </div>
   </div>
 </template>

@@ -3,7 +3,7 @@
     <!-- v-if='!user'をdivに追加するとログインしたときは見えなくなる。 -->
     <h1 class="text">User</h1>
     <p class="text">Your Email: {{ user.email }}</p>
-    <p class="text">Your Name: {{ user.name }}{{user.icon}}</p>
+    <p class="text">Your Name: {{ user.name }}</p>
     <p class="text">Your Icon: <img v-if='user.icon' :src="user.icon" alt="" />
     <img v-else src="~/assets/icon.png" alt="" /></p>
     <form v-on:submit.prevent="submitImg">
