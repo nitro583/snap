@@ -18,6 +18,9 @@
         <button type="submit">Add a Comment</button>
       </form>
     </div>
+        <div class="likebutton" v-if="user">
+          <button>like!</button>      
+    </div>
           <div v-for="(postComment, index) in postComments" v-bind:key="postComments.id">
             <p>               {{ postComment.comment }}</p>
               <p>Commented at {{postComment.date.toDate() | moment}} Comment by {{postComment.author}}
