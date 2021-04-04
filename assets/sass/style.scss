@@ -1,0 +1,81 @@
+@import '../css/reset';
+@import 'signup';
+$bgc: #888;
+
+h1{
+  font-size: 24px;
+}
+h2{
+  font-size: 24px;
+}
+p{
+  font-size: 16px;
+}
+
+a {
+  text-decoration: none;
+  transition: 0.3s;
+  color: inherit;
+  &:hover {
+    opacity: 0.7;
+
+  }
+}
+
+.l-header {
+  position: fixed;
+  backdrop-filter: blur(4px);
+  background-color: rgba(0,68, 131, 0.7);
+    width: 100%;
+  box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.6);
+  color: #fff;
+  &__inner{
+    margin: auto;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    &__left{
+
+    }
+    &__right{
+
+    }
+  }
+  &__nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    &__item{
+      text-align: center;
+      position: relative;
+      list-style-type: none;
+      margin-left: 25px;
+      
+      &:hover{
+
+        &::after{
+          position: absolute;
+          content:"";
+          height: 2px;
+          width: 100%;
+          margin: auto;
+          background-color: #fff;
+          left: 0;
+          right: 0;
+          bottom: -3px;
+          
+        }
+      }
+    }
+  }
+}
+
+
+.l-wrapper{
+  padding-top: 180px;
+  padding-bottom: 120px;
+  max-width: 1024px;
+  width: 100%;
+  margin: auto;
+}

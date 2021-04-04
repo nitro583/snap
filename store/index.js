@@ -4,6 +4,8 @@ export const state = () => ({
   todos: [],
   post: [],
   postComments: [],
+  likedUsers:[],
+
 })
 
 export const getters = {
@@ -15,6 +17,12 @@ export const getters = {
   },
   postComments: state => {
     return state.postComments
+  },
+  likedUsers: state => {
+    return state.likedUsers
+  },
+  likedPosts: state => {
+    return state.likedPosts
   },
 }
 
@@ -40,7 +48,7 @@ export const actions = {
   }, postId) {
     console.log('postID' + postId)
     firebase.firestore().collection('todos').doc(postId)
-   .get()
+      .get()
       .then((res) => {
         const post = []
         post.push(res.data())
@@ -78,6 +86,22 @@ export const actions = {
       })
 
   },
+
+  getLikedPosts({
+    commit
+  }, uid) {
+    firebase.firestore().collection('users').doc(uid).collection(likedPosts).orderBy("createTime", 'desc')
+    .get()
+    .then((res) => {
+      const likedPosts = []
+      res.forEach(x => {
+        likedPosts.push(x.data())
+        console.log(x.data())
+      })
+      commit('getLikedPosts', likedPosts)
+      console.log('getLikedPosts ')})
+
+  },
   submitTodo({
     dispatch
   }, todo) {
@@ -111,6 +135,7 @@ export const actions = {
             uid: uid,
             author: author,
             date: date,
+            likePostCount:0
 
           }).then(() => {
             dispatch('getPostComments', postId)
@@ -118,6 +143,11 @@ export const actions = {
           })
       })
   },
+ 
+ 
+
+
+
   deleteTodo({
     dispatch
   }, id) {
@@ -127,6 +157,9 @@ export const actions = {
         console.log('削除しました')
       })
   },
+
+
+
   updateTodo({
     dispatch
   }, id) {
@@ -139,6 +172,9 @@ export const actions = {
         console.log(todo, res.id)
       })
   },
+
+
+
   submitImg({
     context
   }, image) {
@@ -150,15 +186,7 @@ export const actions = {
 
 
   },
-  //   getImg({commit},todo){
-  //   let storage = firebase.storage()
-  //   let storageRef = storage.ref().child('NGIiXtMwmZ7h5rQYFavp')
-  //   storageRef.getDownloadURL()
-  //   .then(res => {
-  //     console.log(res)
-  //     commit('getData',res)
-  //   })
-  // },
+
   getImg({
     context
   }, image) {
@@ -235,6 +263,15 @@ export const mutations = {
   getPostComments(state, postComments) {
     console.log('postComment:' + postComments)
     state.postComments = postComments
+  },
+  getLikedUsers(state, likedUsers) {
+    console.log('likedUsers:' + likedUsers)
+    state.likedUsers = likedUsers
+  },
+
+  getLikedPosts(state, likedPosts) {
+    console.log('likedPosts:' + likedPosts)
+    state.likedPosts = likedPosts
   },
   deleteTodo(state, index) {
     state.todos.splice(index, 1)
