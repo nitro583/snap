@@ -61,7 +61,7 @@
                <p v-show="errors.length" class="p-signup__form__error">
                {{ errors[0] }}
              </p>
-           </validation-provider>
+           </validation-provider> 
 </div>
       </div>
 <div class="p-signup__form__submit">
