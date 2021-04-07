@@ -1,37 +1,60 @@
 <template>
-  <div class="page">
-    <h1>Dash board</h1>
-    <div v-for="(todo, index) in todos" v-bind:key="todo.id">
-      <div><img :src="todo.imgUrl" alt="" /></div>
-      <div>
-        <p>
-          Posted at {{ todo.date.toDate() | moment }} Photo by {{ todo.author }}
-        </p>
-        <p>{{ todo.todo }}{{ todo.uid }}</p>
-        <p>Location:{{ todo.comment }}</p>
+  <div class="post">
+    <h2>Snaps</h2>
+    <div class="p-post__content">
+      <div
+        class="p-post__card"
+        v-for="(todo, index) in todos"
+        v-bind:key="todo.id"
+      >
+        <div class="p-post__card__image"><img :src="todo.imgUrl" alt="" /></div>
+        <div class="p-post__card__text">
+          <div class="p-post__card__date"><p>
+            <fa :icon="['far', 'clock']" /> {{ todo.date.toDate() | moment }}
+          </p></div>
+          <div class="p-post__card__author">
+          <p><fa :icon="['fas', 'user-circle']" /> {{ todo.author }}</p>
+          </div>
+          <div class="p-post__card__note">
+          <p>{{ todo.todo }}</p>
+          </div>
+          <div class="p-post__card__location">
+          <p><fa :icon="['fas', 'map-marker-alt']" /> {{ todo.comment }}</p>
+          </div>
+        </div>
+        <div class="p-post__card__button">
+
+        <div class="p-post__card__delete">
+        <button v-on:click="deleteTodo(index)" v-if="todo.uid === user.uid">
+          <fa :icon="['fas', 'trash-alt']" />
+        </button>
+        </div>
+        <div class="p-post__card__comment">
+        <NuxtLink
+          :to="{
+            name: 'users-uid-posts-postDetail',
+            params: { uid: todo.uid, postDetail: todo.id }
+          }"
+          ><fa :icon="['far', 'comment']" />
+        </NuxtLink>
+        </div>
+        <div class="p-post__card__like">
+        <button
+          v-on:click="likePost(todo.id)"
+          v-if="user.login && likedPosts.every(val => val.id !== todo.id)"
+        >
+          <fa :icon="['fas', 'heart']" /> {{ todo.likePostCount }}
+        </button>
+        <button class='is-like'
+          v-on:click="notLikePost(todo.id)"
+          v-if="user.login && likedPosts.some(val => val.id === todo.id)"
+        >
+          <fa :icon="['fas', 'heart']" /> {{ todo.likePostCount }}
+        </button>
+       
+        </div>
       </div>
-      <button v-on:click="deleteTodo(index)" v-if="todo.uid === user.uid">
-        Delete
-      </button>
-      <NuxtLink
-        :to="{
-          name: 'users-uid-posts-postDetail',
-          params: { uid: todo.uid, postDetail: todo.id }
-        }"
-        >コメントする</NuxtLink
-      >
-      <button
-        v-on:click="likePost(todo.id)"
-        v-if="user.login && likedPosts.every(val => val.id !== todo.id)"
-      >
-        like!({{todo.likePostCount}})
-      </button>
-      <button
-        v-on:click="notLikePost(todo.id)"
-        v-if="user.login && likedPosts.some(val => val.id === todo.id)"
-      >
-        delike!({{todo.likePostCount}})
-      </button>
+        </div>
     </div>
     <div class="inputform" v-if="user.login">
       <form v-on:submit.prevent="submitTodo">
@@ -125,12 +148,18 @@ export default {
     likePost(post) {
       console.log(post);
       console.log(this.user.uid);
-      this.$store.dispatch("login/likePost", { post: post, uid: this.user.uid });
+      this.$store.dispatch("login/likePost", {
+        post: post,
+        uid: this.user.uid
+      });
     },
-        notLikePost(post) {
+    notLikePost(post) {
       console.log(post);
       console.log(this.user.uid);
-      this.$store.dispatch("login/notLikePost", { post: post, uid: this.user.uid });
+      this.$store.dispatch("login/notLikePost", {
+        post: post,
+        uid: this.user.uid
+      });
     },
     liked(post) {
       const arr = Object.entries(likedPosts);

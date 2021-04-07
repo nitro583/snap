@@ -1,3 +1,5 @@
+import { faComment } from "@fortawesome/free-solid-svg-icons";
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -40,10 +42,27 @@ export default {
     // https://go.nuxtjs.dev/axios
     
     '@nuxtjs/axios',
+    'nuxt-fontawesome'
     
   ],
 
-
+  fontawesome: {
+    component: "fa",
+    imports: [
+      {
+        set: "@fortawesome/free-solid-svg-icons", // Solidアイコン
+        icons: ["faHome", "faCaretRight","faUserCircle","faMapMarkerAlt","faTrashAlt","faHeart"],
+      },
+      {
+        set: "@fortawesome/free-regular-svg-icons", // Solidアイコン
+        icons: [ "faClock","faComment"],
+      },
+      {
+        set: "@fortawesome/free-brands-svg-icons", // Brandアイコン
+        icons: ["faTwitter"],
+      },
+    ],
+  },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
 
@@ -52,5 +71,7 @@ export default {
     transpile: [
       "vee-validate/dist/rules"
     ],
+
+ 
   }
 }

@@ -1,5 +1,9 @@
 @import '../css/reset';
 @import 'signup';
+@import 'login';
+@import 'post';
+
+
 $bgc: #888;
 
 h1{
@@ -24,6 +28,7 @@ a {
 
 .l-header {
   position: fixed;
+  z-index: 999;
   backdrop-filter: blur(4px);
   background-color: rgba(0,68, 131, 0.7);
     width: 100%;
