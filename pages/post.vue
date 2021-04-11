@@ -9,52 +9,57 @@
       >
         <div class="p-post__card__image"><img :src="todo.imgUrl" alt="" /></div>
         <div class="p-post__card__text">
-          <div class="p-post__card__date"><p>
-            <fa :icon="['far', 'clock']" /> {{ todo.date.toDate() | moment }}
-          </p></div>
+          <div class="p-post__card__date">
+            <p>
+              <fa :icon="['far', 'clock']" /> {{ todo.date.toDate() | moment }}
+            </p>
+          </div>
           <div class="p-post__card__author">
-          <p><fa :icon="['fas', 'user-circle']" /> {{ todo.author }}</p>
+            <p>
+             <NuxtLink :to="{ name: 'users-id', params: { id: todo.uid } }"><fa :icon="['fas', 'user-circle']" /> {{
+                todo.author
+              }}</NuxtLink></p>
           </div>
           <div class="p-post__card__note">
-          <p>{{ todo.todo }}</p>
+            <p>{{ todo.todo }}</p>
           </div>
           <div class="p-post__card__location">
-          <p><fa :icon="['fas', 'map-marker-alt']" /> {{ todo.comment }}</p>
+            <p><fa :icon="['fas', 'map-marker-alt']" /> {{ todo.comment }}</p>
           </div>
         </div>
         <div class="p-post__card__button">
+          <div class="p-post__card__delete">
+            <button v-on:click="deleteTodo(index)" v-if="todo.uid === user.uid">
+              <fa :icon="['fas', 'trash-alt']" />
+            </button>
+          </div>
+          <div class="p-post__card__comment">
+            <Nuxt-link
+              :to="{
+                name: 'users-uid-posts-postDetail',
+                params: { uid: todo.uid, postDetail: todo.id }
+              }"
+              ><fa :icon="['far', 'comment']" />
+            </Nuxt-link>
 
-        <div class="p-post__card__delete">
-        <button v-on:click="deleteTodo(index)" v-if="todo.uid === user.uid">
-          <fa :icon="['fas', 'trash-alt']" />
-        </button>
-        </div>
-        <div class="p-post__card__comment">
-        <NuxtLink
-          :to="{
-            name: 'users-uid-posts-postDetail',
-            params: { uid: todo.uid, postDetail: todo.id }
-          }"
-          ><fa :icon="['far', 'comment']" />
-        </NuxtLink>
-        </div>
-        <div class="p-post__card__like">
-        <button
-          v-on:click="likePost(todo.id)"
-          v-if="user.login && likedPosts.every(val => val.id !== todo.id)"
-        >
-          <fa :icon="['fas', 'heart']" /> {{ todo.likePostCount }}
-        </button>
-        <button class='is-like'
-          v-on:click="notLikePost(todo.id)"
-          v-if="user.login && likedPosts.some(val => val.id === todo.id)"
-        >
-          <fa :icon="['fas', 'heart']" /> {{ todo.likePostCount }}
-        </button>
-       
+          </div>
+          <div class="p-post__card__like">
+            <button v-bind:disabled='isPush'
+              v-on:click="likePost(todo.id)"
+              v-if="user.login && likedPosts.every(val => val.id !== todo.id)"
+            >
+              <fa :icon="['fas', 'heart']" /> {{ todo.likePostCount }}
+            </button>
+            <button
+              class="is-like" v-bind:disabled='isPush'
+              v-on:click="notLikePost(todo.id)"
+              v-if="user.login && likedPosts.some(val => val.id === todo.id)"
+            >
+              <fa :icon="['fas', 'heart']" /> {{ todo.likePostCount }}
+            </button>
+          </div>
         </div>
       </div>
-        </div>
     </div>
     <div class="inputform" v-if="user.login">
       <form v-on:submit.prevent="submitTodo">
@@ -81,6 +86,7 @@ export default {
       comment: "",
       thumbnail: "",
       show: true,
+      isPush:false,
       postData: {
         thumbnail: ""
       }
@@ -145,21 +151,30 @@ export default {
       console.log(index);
       this.$store.dispatch("deleteTodo", this.todos[index].id);
     },
+    endPush(){
+      this.isPush=false
+    },
     likePost(post) {
+      this.isPush = true
       console.log(post);
       console.log(this.user.uid);
       this.$store.dispatch("login/likePost", {
         post: post,
         uid: this.user.uid
       });
+      setTimeout(this.endPush,1000)
     },
     notLikePost(post) {
+      this.isPush = true
       console.log(post);
       console.log(this.user.uid);
       this.$store.dispatch("login/notLikePost", {
         post: post,
         uid: this.user.uid
       });
+      setTimeout(this.endPush,1000)
+
+
     },
     liked(post) {
       const arr = Object.entries(likedPosts);

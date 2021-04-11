@@ -30,7 +30,7 @@
       </div>
     </header>
     <div class="l-wrapper">
-      <Nuxt />
+      <Nuxt class="fadein"/>
     </div>
   </div>
 </template>

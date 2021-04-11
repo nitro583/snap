@@ -1,16 +1,43 @@
 <template>
   <div class="login">
-    <!-- v-if='!user'をdivに追加するとログインしたときは見えなくなる。 -->
-    <h1 class="text">User</h1>
-    <p class="text">Your Email: {{ user.email }}</p>
-    <p class="text">Your Name: {{ user.name }}</p>
-    <p class="text">Your Icon: <img v-if='user.icon' :src="user.icon" alt="" />
-    <img v-else src="~/assets/icon.png" alt="" /></p>
-    <form v-on:submit.prevent="submitImg">
-      <input type="file" accept="img/*" @change="changeImg" v-if='show' />
-      <button tyoe="submit">ChangeIcon</button>
-    </form>
+    <div class="p-id__profile">
+    <div class="p-id__profile__title">
+    <h2 class="p-id__profile__name">{{ user.name }}</h2>
+      <button class="c-button" v-on:click="openModal">プロフィールを編集する</button>
+    </div>
+<div class="p-id__profile__left">
+    <div class="p-id__profile__image">
+    <img v-if='user.icon' :src="user.icon" :alt='user.name' />
+    <img v-else src="~/assets/icon.png" :alt="user.name" /></p>
+    </div>
+    </div>
+<div class="p-id__profile__right">
+  <div class="p-id__profile__introduction">
+    <p>あいうえおかきくけこさしすせそ</p>
   </div>
+</div>
+  </div>
+  <transition name="modal">
+
+  <div v-show="showModal" @click.self="closeModal" class="p-id__profile__modal">
+    
+   <div class="p-id__profile__edit">
+
+  <div class="p-id__profile__changeImage">
+    <h3>プロフィールを編集</h3>
+    <h4>アイコンの変更</h4>
+  <form v-on:submit.prevent="submitImg">
+    <input type="file" accept="img/*" @change="changeImg" v-if='show' />
+    <button type="submit">ChangeIcon</button>
+    <div class="p-id__profile__closeButton" @click="closeModal"></div>
+  </form>
+  <h4>自己紹介の変更</h4>
+  </div>
+    </div> 
+
+  </div>
+  </transition>
+</div>
 </template>
 <script>
 export default {
@@ -26,12 +53,19 @@ export default {
       updateName: "",
       thumbnail: "",
       show:true,
+      showModal:false,
       postData: {
         thumbnail: ""
       }
     };
   },
   methods: {
+    openModal(){
+      this.showModal = true
+    },
+    closeModal(){
+      this.showModal = false
+    },
     changeImg(e) {
       this.thumbnail = e.target.files[0];
       console.log(this.thumbnail);
