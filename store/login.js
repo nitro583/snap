@@ -2,19 +2,28 @@ import firebase from '~/plugins/firebase'
 
 
 export const state = () => ({
-  user: {
-    uid: '',
-    email: '',
-    name: '',
-    icon: '',
-    login: false,
-  },
+  user:[],
+  postUser:[],
+  // user: {
+  //   uid: '',
+  //   email: '',
+  //   name: '',
+  //   icon: '',
+  //   login: false,
+  // },
   likedPosts: [],
+
 })
 
 export const getters = {
   user: state => {
     return state.user
+  },
+  postUser: state => {
+    return state.postUser
+  },
+  introduction: state => {
+    return state.postUser[0].introduction
   },
   likedPosts: state => {
     return state.likedPosts
@@ -36,12 +45,35 @@ export const actions = {
     },
     update({
       dispatch
-    }, name) {
+    }, {name,uid}) {
+
+      const batch = firebase.firestore().batch()
       firebase.auth().currentUser.updateProfile({
           displayName: name
         })
         .then(() => {
           console.log('Update successful')
+          console.log(name)
+          console.log(uid)
+
+          batch.set(
+            firebase.firestore()
+            .collection('users')
+            .doc(uid), {
+              uid: uid,
+              name: name,
+              introduction: '',
+            } ,{ merge: true }
+          )
+
+          batch.commit()
+            .then(() => {
+              console.log('profile updated.')
+            })
+
+
+
+
           dispatch('checkLogin')
 
         })
@@ -50,12 +82,53 @@ export const actions = {
         })
     },
 
+
+    updateProfile({
+      dispatch
+    }, {uid,name,introduction}) {
+
+      const batch = firebase.firestore().batch()
+
+      firebase.auth().currentUser.updateProfile({
+          displayName: name
+
+        })
+        .then(() => {
+          console.log('Update successful')
+
+
+          batch.set(
+            firebase.firestore()
+            .collection('users')
+            .doc(uid), {
+              uid: uid,
+              name: name,
+              introduction: introduction,
+            }, { merge: true }
+          )
+
+          batch.commit()
+            .then(() => {
+              console.log('profile updated.')
+              dispatch('getUser',uid)
+              dispatch('checkLogin')
+
+            })
+
+        })
+        .catch((error) => {
+          alert(error)
+        })
+    },
+
+
     submitImg({
       dispatch
     }, {
       img: img,
       uid: uid,
     }) {
+      const batch = firebase.firestore().batch()
       let imgUrl = ''
       let storage = firebase.storage()
       let storageRef = storage.ref().child('/icon/' + uid)
@@ -70,7 +143,20 @@ export const actions = {
                   photoURL: imgUrl
                 })
                 .then(function () {
-                  dispatch('checkLogin')
+
+                  batch.set(
+                    firebase.firestore()
+                    .collection('users')
+                    .doc(uid), {
+                      photoURL: imgUrl
+                    }, { merge: true }
+                  )
+                  batch.commit()
+                    .then(() => {
+                      dispatch('getUser',uid)
+                      console.log('profile updated.')
+                      dispatch('checkLogin')
+                    })
                 })
                 .catch((error) => {
                   alert(error)
@@ -78,6 +164,25 @@ export const actions = {
             })
         })
     },
+
+    getUser({
+      commit,
+    },uid) {
+      firebase.firestore().collection('users').doc(uid)
+      .get()
+      .then((res) => {
+        const user = []
+        user.push(res.data())
+        console.log(res.data())
+        console.log('取得完了')
+        commit('getUser', user)
+        console.log('commit')
+
+
+      })
+    },
+
+
     loginGoogle({
       dispatch
     }) {
@@ -114,7 +219,16 @@ export const actions = {
     goTop() {
       this.$router.push("/");
     },
-
+    // getUser({dispatch},{uid}){
+    //   firebase.auth().getUser(uid).then(function(user) { 
+    //     console.log(user.displayName)
+    //     commit('getUser', {
+    //       uid: user.uid,
+    //       name: user.displayName,
+    //       icon: user.photoURL,
+    //     })
+    //   }
+    //   )},
     likePost({
       dispatch
     }, {
@@ -261,9 +375,12 @@ export const actions = {
           }, payload) {
             firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
               .then(user => {
-                console.log(user)
-                dispatch('update', payload.name)
+      
+               
+                dispatch('update', {name:payload.name,uid:
+                  firebase.auth().currentUser.uid})
                 dispatch('checkLogin')
+                dispatch('goTop')
               }).catch(function (error) {
                 alert(error)
               })
@@ -286,10 +403,20 @@ export const actions = {
         getData(state, user) {
           state.user = user
         },
+        getUser(state, user) {
+          state.postUser = user
+        },
         logOut(state) {
           state.user = ''
 
         },
+        updateUserName (state, name) {
+          state.postUser[0].name = name
+        },
+        updateIntroduction (state, message) {
+          state.postUser[0].introduction = message
+        },
+
         getLikedPosts(state, likedPosts) {
           console.log('likedPosts:' + likedPosts)
           state.likedPosts = likedPosts

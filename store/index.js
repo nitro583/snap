@@ -43,6 +43,7 @@ export const actions = {
 
       })
   },
+
   getPost({
     commit
   }, postId) {

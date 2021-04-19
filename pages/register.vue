@@ -7,6 +7,7 @@
     <div class="p-signup__title">
     <h2>Sign up</h2>
     </div>
+    <validation-observer v-slot="{ invalid,passes }">
     <div class="p-signup__notice">
     <p v-if='errors.length'>
       未入力の項目があります。
@@ -25,7 +26,8 @@
       </label>
         </div>
       <div class="p-signup__form__right">
-        <validation-provider v-slot="{ errors }" rules="required" name="User Name">
+        <validation-provider v-slot="{ errors }" rules="required|max:10
+        " name=" Name">
         <input id='name' class="p-signup__form__input" type="text" v-model="name" required>
        <p v-show="errors.length" class="p-signup__form__error">
         {{ errors[0] }}
@@ -56,7 +58,7 @@
       </label>
 </div>
 <div class="p-signup__form__right">
-        <validation-provider v-slot="{ errors }" rules="required" name="Password">
+        <validation-provider v-slot="{ errors }" rules="required|max:20" name="Password">
         <input id='password' class="p-signup__form__input" type="password" v-model="password" required>
                <p v-show="errors.length" class="p-signup__form__error">
                {{ errors[0] }}
@@ -65,10 +67,12 @@
 </div>
       </div>
 <div class="p-signup__form__submit">
-      <button class="p-signup__form__button" type="submit" @click= "register">Signup</button>
+      <button class="p-signup__form__button" type="submit"   :disabled="invalid" @click= "register">Signup</button>
 </div>
     </form>
     </div><!--register__form-->
+  </validation-observer>
+
   </div>
   </div>
   </div>

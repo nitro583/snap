@@ -108,7 +108,8 @@ export default {
     },
     likedPosts() {
       return this.$store.getters["login/likedPosts"];
-    }
+    },
+
   },
 
   methods: {
