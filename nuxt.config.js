@@ -1,5 +1,3 @@
-import { faComment } from "@fortawesome/free-solid-svg-icons";
-
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -19,7 +17,6 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    { src: '~/assets/sass/style.scss', lang: 'scss' }
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -40,8 +37,8 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    
     '@nuxtjs/axios',
+<<<<<<< HEAD
     'nuxt-fontawesome',
     
   ],
@@ -63,6 +60,11 @@ export default {
       },
     ],
   },
+=======
+  ],
+
+
+>>>>>>> 836932bae5b3c2f47295b91e0171dce1dcd76125
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
 
@@ -71,7 +73,5 @@ export default {
     transpile: [
       "vee-validate/dist/rules"
     ],
-
- 
   }
 }

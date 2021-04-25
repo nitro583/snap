@@ -2,27 +2,11 @@ import firebase from '@/plugins/firebase'
 
 export const state = () => ({
   todos: [],
-  post: [],
-  postComments: [],
-  likedUsers:[],
-
 })
 
 export const getters = {
   todos: state => {
     return state.todos
-  },
-  post: state => {
-    return state.post
-  },
-  postComments: state => {
-    return state.postComments
-  },
-  likedUsers: state => {
-    return state.likedUsers
-  },
-  likedPosts: state => {
-    return state.likedPosts
   },
 }
 
@@ -30,7 +14,7 @@ export const actions = {
   getTodos({
     commit
   }, todo) {
-    firebase.firestore().collection('todos').orderBy("date", 'desc')
+    firebase.firestore().collection('todos').orderBy("date",'desc')
       .get()
       .then((res) => {
         const todos = []
@@ -39,6 +23,7 @@ export const actions = {
           console.log(x.data())
         })
         commit('getTodos', todos)
+<<<<<<< HEAD
         console.log('commit')
 
       })
@@ -68,40 +53,9 @@ export const actions = {
         //   commit('getPostComment', postComments)
         //   console.log('commit')
         // })
+=======
+>>>>>>> 836932bae5b3c2f47295b91e0171dce1dcd76125
       })
-  },
-  getPostComments({
-    commit
-  }, postId) {
-    console.log('comments取得用postID' + postId)
-    firebase.firestore().collection('todos').doc(postId).collection('comments').orderBy("date", 'desc').get()
-      .then((res) => {
-        const postComments = []
-        res.forEach(x => {
-          postComments.push(x.data())
-          console.log(x.data())
-        })
-        commit('getPostComments', postComments)
-        console.log('commit' + postComments)
-
-      })
-
-  },
-
-  getLikedPosts({
-    commit
-  }, uid) {
-    firebase.firestore().collection('users').doc(uid).collection(likedPosts).orderBy("createTime", 'desc')
-    .get()
-    .then((res) => {
-      const likedPosts = []
-      res.forEach(x => {
-        likedPosts.push(x.data())
-        console.log(x.data())
-      })
-      commit('getLikedPosts', likedPosts)
-      console.log('getLikedPosts ')})
-
   },
   submitTodo({
     dispatch
@@ -118,37 +72,6 @@ export const actions = {
           })
       })
   },
-  submitComment({
-    dispatch
-  }, {
-    comment: comment,
-    author: author,
-    uid: uid,
-    postId: postId
-  }) {
-    let date = firebase.firestore.Timestamp.now();
-    firebase.firestore().collection('todos').doc(postId).collection('comments').add({})
-      .then((res) => {
-        firebase.firestore().collection('todos').doc(postId).collection('comments').doc(res.id)
-          .set({
-            comment: comment,
-            id: res.id,
-            uid: uid,
-            author: author,
-            date: date,
-            likePostCount:0
-
-          }).then(() => {
-            dispatch('getPostComments', postId)
-            console.log(comment, res.id)
-          })
-      })
-  },
- 
- 
-
-
-
   deleteTodo({
     dispatch
   }, id) {
@@ -158,9 +81,6 @@ export const actions = {
         console.log('削除しました')
       })
   },
-
-
-
   updateTodo({
     dispatch
   }, id) {
@@ -173,9 +93,6 @@ export const actions = {
         console.log(todo, res.id)
       })
   },
-
-
-
   submitImg({
     context
   }, image) {
@@ -187,16 +104,24 @@ export const actions = {
 
 
   },
-
+  //   getImg({commit},todo){
+  //   let storage = firebase.storage()
+  //   let storageRef = storage.ref().child('NGIiXtMwmZ7h5rQYFavp')
+  //   storageRef.getDownloadURL()
+  //   .then(res => {
+  //     console.log(res)
+  //     commit('getData',res)
+  //   })
+  // },
   getImg({
-    context
+    commit
   }, image) {
     let storage = firebase.storage()
     let storageRef = storage.ref().child(image.name)
     storageRef.getDownloadURL()
       .then(res => {
         console.log(res)
-        context.commit('getData', res)
+        commit('getData', res)
       })
   },
   submitPost({
@@ -206,7 +131,7 @@ export const actions = {
     comment: comment,
     img: img,
     author: author,
-    uid: uid
+    uid:uid
   }) {
     let imgName = ''
     let imgUrl = ''
@@ -256,23 +181,6 @@ export const actions = {
 export const mutations = {
   getTodos(state, todos) {
     state.todos = todos
-  },
-  getPost(state, post) {
-    console.log('post:' + post)
-    state.post = post
-  },
-  getPostComments(state, postComments) {
-    console.log('postComment:' + postComments)
-    state.postComments = postComments
-  },
-  getLikedUsers(state, likedUsers) {
-    console.log('likedUsers:' + likedUsers)
-    state.likedUsers = likedUsers
-  },
-
-  getLikedPosts(state, likedPosts) {
-    console.log('likedPosts:' + likedPosts)
-    state.likedPosts = likedPosts
   },
   deleteTodo(state, index) {
     state.todos.splice(index, 1)

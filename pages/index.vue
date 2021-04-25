@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div class="p-index  fadein">
 <div class="p-index__mainVisual">
     <h2>日常の一瞬を、共有しよう。</h2>
@@ -79,6 +80,25 @@
       </div>
 
 
+=======
+  <div class="container">
+    <h1>Snap</h1>
+
+    <label
+      >name
+      <input type="text" v-model="user.name" />
+    </label>
+    <label
+      >mail
+      <input type="text" v-model="user.email" />
+    </label>
+    <button type="button" v-on:click= "submit">submit</button>
+
+    <button type="button" v-on:click= "getData">
+      Fetch Data
+    </button>
+      <p>{{ dbData }}</p>
+>>>>>>> 836932bae5b3c2f47295b91e0171dce1dcd76125
   </div>
 
 <div class="p-index__more">
