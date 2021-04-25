@@ -5,7 +5,7 @@ export default {
   head: {
     title: 'snap',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'ja'
     },
     meta: [
       { charset: 'utf-8' },
@@ -42,7 +42,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     
     '@nuxtjs/axios',
-    'nuxt-fontawesome'
+    'nuxt-fontawesome',
     
   ],
 
@@ -51,7 +51,7 @@ export default {
     imports: [
       {
         set: "@fortawesome/free-solid-svg-icons", // Solidアイコン
-        icons: ["faHome", "faCaretRight","faUserCircle","faMapMarkerAlt","faTrashAlt","faHeart"],
+        icons: ["faHome", "faCaretRight","faUserCircle","faMapMarkerAlt","faTrashAlt","faHeart","faCamera"],
       },
       {
         set: "@fortawesome/free-regular-svg-icons", // Solidアイコン

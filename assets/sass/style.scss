@@ -1,7 +1,9 @@
 @import '../css/reset';
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;700&display=swap');
+@import 'component';
 @import 'signup';
+
 @import 'login';
 @import 'post';
 @import 'id';
@@ -101,30 +103,7 @@ a {
   margin: auto;
 }
 
-.c-button{
-  background-color: rgba(0,68, 131, 0.7);
-  color: #fff;
-  font-size: 14px;
-  height: 30px;
-  width: 100%;
-  max-width: 250px;
-  text-align: center;
-  border-radius: 999px;
-  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.2);
-  margin: 10px;
-  transition: 0.3s;
-   &:focus{
-    outline: none;
-  }
-  &:hover{
-    -webkit-transform: translate(0, -2px);
-    transform: translate(0, -2px);
-    -webkit-box-shadow: 0 4px 10px rgba(0, 0, 0, .2);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, .2);
-  }
-  
 
-}
 .fadein {
   opacity: 0;
   animation-name: fadein;

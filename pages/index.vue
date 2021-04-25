@@ -118,9 +118,9 @@ export default {
       console.log("computed todos");
       return this.$store.getters["todos"];
     },
-    getThumbnail() {
-      return this.$store.getters["thumbnail"];
-    },
+    // getThumbnail() {
+    //   return this.$store.getters["thumbnail"];
+    // },
     user() {
       return this.$store.getters["login/user"];
     },
@@ -132,27 +132,27 @@ export default {
     }
   },
   methods: {
-    submit() {
-const db = firebase.firestore()
-      let dbUsers = db.collection("users");
-      dbUsers
-        .add({
-          name: this.user.name,
-          email: this.user.email,
-        })
-        .then((ref) => {
-          console.log("ADD ID: ", ref.id);
-        });
-    },
-    getData () {
-      const db = firebase.firestore()
-      let docUsers = db.collection('users').doc('Uq8Yne3Z7JMORW53wDHn')
-      let dbData = []
-      this.dbData =dbData
-      docUsers.get().then(function(doc) {
-        dbData.push(doc.data().name)
-      })
-    }
+//     submit() {
+// const db = firebase.firestore()
+//       let dbUsers = db.collection("users");
+//       dbUsers
+//         .add({
+//           name: this.user.name,
+//           email: this.user.email,
+//         })
+//         .then((ref) => {
+//           console.log("ADD ID: ", ref.id);
+//         });
+//     },
+    // getData () {
+    //   const db = firebase.firestore()
+    //   let docUsers = db.collection('users').doc('Uq8Yne3Z7JMORW53wDHn')
+    //   let dbData = []
+    //   this.dbData =dbData
+    //   docUsers.get().then(function(doc) {
+    //     dbData.push(doc.data().name)
+    //   })
+    // }
   },
 };
 </script>

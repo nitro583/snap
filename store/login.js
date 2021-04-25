@@ -132,7 +132,9 @@ export const actions = {
       let imgUrl = ''
       let storage = firebase.storage()
       let storageRef = storage.ref().child('/icon/' + uid)
-      storageRef.put(img)
+      storageRef.putString(img, 'data_url')
+      // storageRef.put(img)
+
         .then((res) => {
           console.log(res)
           storageRef.getDownloadURL()

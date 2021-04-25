@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="">
     <div class="p-id__profile">
       <div class="p-id__profile__title">
         <h2 class="p-id__profile__name">{{ userName }}</h2>
@@ -33,28 +33,22 @@
         @click.self="closeModal"
         class="p-id__profile__modal"
       >
-        <div class="p-id__profile__edit">
-          <div class="p-id__profile__changeImage">
-            <h3>プロフィールを編集</h3>
-            <h4>アイコンの変更</h4>
-            <form v-on:submit.prevent="submitImg">
-              <input
-                type="file"
-                accept="image/*"
-                @change="changeImg"
-                v-if="show"
-              />
-              <div class="p-id__profile__closeButton" @click="closeModal"></div>
-            </form>
+        <div class="p-id__profile__edit" >
+          <div class="p-id__profile__closeButton" @click="closeModal"></div>
+          <validation-observer v-slot="{ invalid, passes }">
+            <!-- <div class="p-id__profile__edit__title"> -->
+            <h3 class="p-id__profile__edit__h3">プロフィールを編集</h3>
 
-            <h4>自己紹介の変更</h4>
+            <div class="p-id__profile__edit__image">
+              <image-input :show="imgShow" v-model="image" />
+            </div>
             <form class="" @submit.prevent>
-              <div class="p-signup__form__left">
-                <label class="p-signup__form__label" for="name"
+              <div class="p-id__profile__edit__label-area">
+                <label class="p-id__profile__edit__label" for="name"
                   >User Name
                 </label>
               </div>
-              <div class="p-signup__form__right">
+              <div class="p-id__profile__edit__input-area">
                 <validation-provider
                   v-slot="{ errors }"
                   rules="required|max:15"
@@ -62,20 +56,22 @@
                 >
                   <input
                     id="name"
-                    class="p-signup__form__input"
+                    class="c-input p-id__profile__edit__input"
                     type="text"
                     v-model="userName"
                     required
                   />
-                  <p v-show="errors.length" class="p-signup__form__error">
+                  <p v-show="errors.length" class="p-id__profile__edit__error">
                     {{ errors[0] }}
                   </p>
                 </validation-provider>
-                <label class="p-signup__form__label" for="introduction"
-                  >introduction
-                </label>
+                <div class="p-id__profile__edit__label-area">
+                  <label class="p-id__profile__edit__label" for="introduction"
+                    >introduction
+                  </label>
+                </div>
               </div>
-              <div class="p-signup__form__right">
+              <div class="p-id__profile__edit__input-area">
                 <validation-provider
                   v-slot="{ errors }"
                   rules="max:140"
@@ -84,16 +80,19 @@
                   <textarea
                     rows="5"
                     id="introduction"
-                    class="p-signup__form__input"
+                    class="c-input p-id__profile__edit__text-area"
                     type="text"
                     v-model="introduction"
                   ></textarea>
-                  <p v-show="errors.length" class="p-signup__form__error">
+                  <p v-show="errors.length" class="p-id__profile__edit__error">
                     {{ errors[0] }}
                   </p>
                 </validation-provider>
+              </div>
+              <div class="p-id__profile__edit__button-area">
+
                 <button
-                  class="p-signup__form__button"
+                  class="c-button p-id__profile__edit__button"
                   type="submit"
                   :disabled="invalid"
                   @click="updateProfile"
@@ -102,25 +101,27 @@
                 </button>
               </div>
             </form>
-          </div>
+          </validation-observer>
         </div>
       </div>
     </transition>
   </div>
 </template>
 <script>
+import ImageInput from "@/components/imageInput.vue";
 export default {
-  //   async fetch({ route,store }) {
-  //   console.log("await");
-  //   await store.dispatch("login/getUser",route.params.id);
-  // },
-
   async fetch({ store, params }) {
     console.log("params.id" + params.id);
     await store.dispatch("login/getUser", params.id);
     console.log("getUserしました");
   },
-
+    head() {
+      return {
+        bodyAttrs: {
+          class: this.scrollLock
+        }
+      }
+    },
   computed: {
     postUser() {
       return this.$store.getters["login/postUser"];
@@ -147,6 +148,10 @@ export default {
       }
     }
   },
+
+  components: {
+    ImageInput
+  },
   data() {
     return {
       email: "",
@@ -155,11 +160,11 @@ export default {
       thumbnail: "",
       uid: this.$route.params.id,
       show: true,
+      imgShow: false,
       showModal: false,
+      scrollLock:'',
       error: "",
-      postData: {
-        thumbnail: ""
-      }
+      image: {}
     };
   },
   methods: {
@@ -188,38 +193,43 @@ export default {
     },
     openModal() {
       this.showModal = true;
+      this.scrollLock = 'lock';
     },
     closeModal() {
       this.showModal = false;
+      this.scrollLock = '';
+
       this.$store.dispatch("login/getUser", this.user.uid);
     },
-    changeImg(e) {
-      this.thumbnail = e.target.files[0];
-      console.log(this.thumbnail);
-      if (this.thumbnail.size / 1000000 > 5) {
-        this.error =
-          "ファイルサイズが大きすぎます（" +
-          Math.round(this.thumbnail.size / 1000000) +
-          "MB /5MB）";
-      }
-      if (this.error) {
-        //errorsが存在する場合は内容をalert
-        alert(this.error);
-        e.currentTarget.value = "";
-        this.thumbnail = "";
-        this.error = "";
-      }
-      if (this.thumbnail) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.postData.thumbnail = reader.result + "";
-        };
-        reader.readAsDataURL(this.thumbnail);
-        console.log("選択完了");
-        // this.submitImg(this.thumbnail)
-        return false;
-      }
-    },
+    // changeImg(e) {
+    //   this.thumbnail = e.target.files[0];
+    //   // this.thumbnail = this.image
+
+    //   console.log(this.thumbnail);
+    //   if (this.thumbnail.size / 1000000 > 5) {
+    //     this.error =
+    //       "ファイルサイズが大きすぎます（" +
+    //       Math.round(this.thumbnail.size / 1000000) +
+    //       "MB /5MB）";
+    //   }
+    //   if (this.error) {
+    //     //errorsが存在する場合は内容をalert
+    //     alert(this.error);
+    //     e.currentTarget.value = "";
+    //     this.thumbnail = "";
+    //     this.error = "";
+    //   }
+    //   if (this.thumbnail) {
+    //     const reader = new FileReader();
+    //     reader.onload = () => {
+    //       this.postData.thumbnail = reader.result + "";
+    //     };
+    //     reader.readAsDataURL(this.thumbnail);
+    //     console.log("選択完了");
+
+    //     return false;
+    //   }
+    // },
     getImg() {
       this.$store.dispatch("getImg", this.thumbnail);
     },
@@ -229,16 +239,23 @@ export default {
     },
 
     submitImg() {
+      this.thumbnail = this.image.src;
+      console.log("aaaaaaaaaaa" + this.thumbnail);
       if (this.thumbnail) {
         this.$store.dispatch("login/submitImg", {
           img: this.thumbnail,
           uid: this.user.uid
         });
         this.thumbnail = "";
-        this.postData.thumbnail = "";
+        // this.image='';
+        // this.image='';
+        // this.postData.thumbnail = "";
+        this.imgShow = true;
         this.show = false;
+
         this.$nextTick(function() {
           this.show = true;
+          this.imgShow = false;
         });
       }
     }
