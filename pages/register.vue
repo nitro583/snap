@@ -1,76 +1,62 @@
 <template>
   <div class="register">
-    <div class='p-signup'>
-    <div class='p-signup__content'>
-
     <!-- v-if='!user'をdivに追加するとログインしたときは見えなくなる。 -->
-    <div class="p-signup__title">
-    <h2>Sign up</h2>
-    </div>
-    <div class="p-signup__notice">
+    <h1 class="text">新規登録</h1>
     <p v-if='errors.length'>
-      未入力の項目があります。
+      <b>未入力の項目があります</b>
       <ul>
         <li v-for='error in errors'>{{error}}
         </li>
       </ul>
     </p>
-    </div>
-    <div class="p-signup__form">
-    <form class="" @submit.prevent>
-      <div class="p-signup__form__item">
-        <div class="p-signup__form__left">
-      <label class='p-signup__form__label'for='name'
+
+    <p class="text">Your Email: {{ user.email }}</p>
+    <div class="p-register__form">
+    <form class="form" @submit.prevent>
+      <div class="label">
+      <label class="label" for='name'
         >User Name
       </label>
-        </div>
-      <div class="p-signup__form__right">
+      </div>
+      <div class="c-input">
         <validation-provider v-slot="{ errors }" rules="required" name="User Name">
-        <input id='name' class="p-signup__form__input" type="text" v-model="name" required>
-       <p v-show="errors.length" class="p-signup__form__error">
+        <input id='name' class="input" type="text" v-model="name" required>
+       <p v-show="errors.length" class="help is-danger">
         {{ errors[0] }}
              </p>
            </validation-provider>
       </div>
-      </div> 
-      <div class="p-signup__form__item">
-          <div class="p-signup__form__left">
-      <label class='p-signup__form__label' for='email' 
+      <div class="label">
+      <label for='email' class="label"
         >E-mail
       </label>
       </div>
-      <div class="p-signup__form__right">
+      <div class="c-input">
         <validation-provider v-slot="{ errors }" rules="required|email" name='E-mail'>
-        <input id='email' class="p-signup__form__input" type="email" v-model="email" required>
-               <p v-show="errors.length" class="p-signup__form__error">
+        <input id='email' class="input" type="email" v-model="email" required>
+               <p v-show="errors.length" class="help is-danger">
                {{ errors[0] }}
              </p>
            </validation-provider>
       </div>
-      </div>
-      <div class="p-signup__form__item">
-
-<div class="p-signup__form__left">
-      <label for='password' class="p-signup__form__label"
+<div class="label">
+      <label for='password' class="label"
         >Password
       </label>
 </div>
-<div class="p-signup__form__right">
+<div class="c-input">
         <validation-provider v-slot="{ errors }" rules="required" name="Password">
-        <input id='password' class="p-signup__form__input" type="password" v-model="password" required>
-               <p v-show="errors.length" class="p-signup__form__error">
+        <input id='password' class="input" type="password" v-model="password" required>
+               <p v-show="errors.length" class="help is-danger">
                {{ errors[0] }}
              </p>
-           </validation-provider> 
+           </validation-provider>
 </div>
-      </div>
-<div class="p-signup__form__submit">
-      <button class="p-signup__form__button" type="submit" @click= "register">Signup</button>
+<div class="c-button">
+      <button class="button" type="submit" @click= "register">Signup</button>
 </div>
     </form>
     </div><!--register__form-->
-  </div>
-  </div>
   </div>
 </template>
 <script>
