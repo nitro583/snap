@@ -1,7 +1,12 @@
 <template>
   <div class="login">
+    <div class="p-login">
+      <div class="p-login__content">
     <!-- v-if='!user'をdivに追加するとログインしたときは見えなくなる。 -->
-    <h1 class="text">ログイン</h1>
+    <div class="p-login__title">
+    <h2 class="">Login</h2>
+    </div>
+    <div class="p-login__notice">
      <p v-if='errors.length'>
       <b>未入力の項目があります</b>
       <ul>
@@ -9,52 +14,54 @@
         </li>
       </ul>
     </p>
-    <p class="text">Your Email: {{ user.email }}</p>
-    <p class="text">Your Name: {{ user.name }}</p>
-
-<div class="update">
-    <input v-model="updateName" type="text" />
-    <button @click="update">update</button>
 </div>
 
   <div class="p-login__form">
     <form class="form" @submit.prevent>
-      <div class="label">
-      <label for='email' class="label"
-        >email
+      <div class="p-login__form__item">
+        <div class="p-login__form__left">
+      <label for='email' class="p-login__form__label"
+        >E-mail
       </label>
-      </div>
-      <div class="c-input">
+        </div>
+      <div class="p-login__form__right">
         <validation-provider v-slot="{ errors }" rules="required|email" name="E-mail">
-        <input id='email' class="input" type="email" v-model="email" required>
-       <p v-show="errors.length" class="help is-danger">
+        <input id='email' class="p-login__form__input" type="email" v-model="email" required>
+       <p v-show="errors.length" class="p-login__form__error">
         {{ errors[0] }}
              </p>
            </validation-provider>
       </div>
-<div class="label">
-      <label for='password' class="label"
-        >password
+      </div>
+      <div class="p-login__form__item">
+<div class="p-login__form__left">
+      <label for='password' class="p-login__form__label"
+        >Password
       </label>
 </div>
-<div class="c-input">
+<div class="p-login__form__right">
         <validation-provider v-slot="{ errors }" rules="required" name="Password">
-        <input id='password' class="input" type="password" v-model="password" required>
-       <p v-show="errors.length" class="help is-danger">
+        <input id='password' class="p-login__form__input" type="password" v-model="password" required>
+       <p v-show="errors.length" class="p-login__form__error">
         {{ errors[0] }}
              </p>
            </validation-provider>
+        </div>
 </div>
-<div class="c-button">
-      <button class="button" type="submit" @click="login">Login</button>
+<div class="p-login__form__submit">
+      <button class="p-login__form__button" type="submit" @click="login">Sign in with E-mail</button>
       </div>
-      <div class="c-button">
-      <button class="button" type="submit" @click="loginGoogle">
-        Googleアカウントでログイン
+      <div class="p-login__form__google">
+
+      <button class="c-button__google" type="submit" @click="loginGoogle">
+        Sign in with Google
       </button>
 </div>
     </form>
   </div><!--p-login__form-->
+  
+        </div>
+      </div>
   </div>
 </template>
 <script>
