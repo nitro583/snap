@@ -23,7 +23,6 @@ export const actions = {
           console.log(x.data())
         })
         commit('getTodos', todos)
-<<<<<<< HEAD
         console.log('commit')
 
       })
@@ -53,8 +52,6 @@ export const actions = {
         //   commit('getPostComment', postComments)
         //   console.log('commit')
         // })
-=======
->>>>>>> 836932bae5b3c2f47295b91e0171dce1dcd76125
       })
   },
   submitTodo({

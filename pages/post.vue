@@ -50,13 +50,10 @@ export default {
      user() {
       return this.$store.getters["login/user"];
     },
-<<<<<<< HEAD
     likedPosts() {
       return this.$store.getters["login/likedPosts"];
     },
 
-=======
->>>>>>> 836932bae5b3c2f47295b91e0171dce1dcd76125
   },
   methods: {
 

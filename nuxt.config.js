@@ -38,7 +38,6 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-<<<<<<< HEAD
     'nuxt-fontawesome',
     
   ],
@@ -60,11 +59,6 @@ export default {
       },
     ],
   },
-=======
-  ],
-
-
->>>>>>> 836932bae5b3c2f47295b91e0171dce1dcd76125
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
 

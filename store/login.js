@@ -2,9 +2,8 @@ import firebase from '~/plugins/firebase'
 
 
 export const state = () => ({
-<<<<<<< HEAD
-  user:[],
-  postUser:[],
+  user: [],
+  postUser: [],
   // user: {
   //   uid: '',
   //   email: '',
@@ -46,7 +45,10 @@ export const actions = {
     },
     update({
       dispatch
-    }, {name,uid}) {
+    }, {
+      name,
+      uid
+    }) {
 
       const batch = firebase.firestore().batch()
       firebase.auth().currentUser.updateProfile({
@@ -64,7 +66,9 @@ export const actions = {
               uid: uid,
               name: name,
               introduction: '',
-            } ,{ merge: true }
+            }, {
+              merge: true
+            }
           )
 
           batch.commit()
@@ -86,7 +90,11 @@ export const actions = {
 
     updateProfile({
       dispatch
-    }, {uid,name,introduction}) {
+    }, {
+      uid,
+      name,
+      introduction
+    }) {
 
       const batch = firebase.firestore().batch()
 
@@ -105,13 +113,15 @@ export const actions = {
               uid: uid,
               name: name,
               introduction: introduction,
-            }, { merge: true }
+            }, {
+              merge: true
+            }
           )
 
           batch.commit()
             .then(() => {
               console.log('profile updated.')
-              dispatch('getUser',uid)
+              dispatch('getUser', uid)
               dispatch('checkLogin')
 
             })
@@ -134,7 +144,7 @@ export const actions = {
       let storage = firebase.storage()
       let storageRef = storage.ref().child('/icon/' + uid)
       storageRef.putString(img, 'data_url')
-      // storageRef.put(img)
+        // storageRef.put(img)
 
         .then((res) => {
           console.log(res)
@@ -152,11 +162,13 @@ export const actions = {
                     .collection('users')
                     .doc(uid), {
                       photoURL: imgUrl
-                    }, { merge: true }
+                    }, {
+                      merge: true
+                    }
                   )
                   batch.commit()
                     .then(() => {
-                      dispatch('getUser',uid)
+                      dispatch('getUser', uid)
                       console.log('profile updated.')
                       dispatch('checkLogin')
                     })
@@ -170,19 +182,19 @@ export const actions = {
 
     getUser({
       commit,
-    },uid) {
+    }, uid) {
       firebase.firestore().collection('users').doc(uid)
-      .get()
-      .then((res) => {
-        const user = []
-        user.push(res.data())
-        console.log(res.data())
-        console.log('取得完了')
-        commit('getUser', user)
-        console.log('commit')
+        .get()
+        .then((res) => {
+          const user = []
+          user.push(res.data())
+          console.log(res.data())
+          console.log('取得完了')
+          commit('getUser', user)
+          console.log('commit')
 
 
-      })
+        })
     },
 
 
@@ -248,266 +260,205 @@ export const actions = {
       firebase.firestore().collection('todos').doc(postRef).collection('likedUsers').doc(anotherUserRef).get()
         .then((ref) => {
 
-          if (ref.exists) {
-            console.log(ref.data())
-            console.log('Likeされています')
-          } else {
-            console.log('Likeされていません')
-
-            batch.set(
-              firebase.firestore()
-              .collection('todos')
-              .doc(postRef)
-              .collection('likedUsers')
-              .doc(anotherUserRef), {
-                id: anotherUserRef,
-                createTime: date,
-              }
-            )
-
-            batch.set(
-              firebase.firestore()
-              .collection('users')
-              .doc(anotherUserRef)
-              .collection('likedPosts')
-              .doc(postRef), {
-                id: postRef,
-                createTime: date
-              }
-            )
-
-            batch.update(
-              firebase.firestore()
-              .collection('todos')
-              .doc(postRef), {
-                likePostCount: firebase.firestore.FieldValue.increment(1)
-              }
-            )
-            batch.commit()
-              .then(() => {
-                dispatch('getLikedPosts', uid)
-                dispatch('getTodos', uid, {
-                  root: true
-                })
-                console.log('Likeしました')
-              })
-=======
-user: {
-  uid: '',
-  email: '',
-  name:'',
-  login: false,
-},
-})
-
-export const getters = {
-user: state => {
-  return state.user
-}
-}
-
-export const actions = {
-  login({dispatch},payload) {
-    firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
-    .then(user => {
-      console.log('成功')
-      dispatch('checkLogin')
-    }).catch((error)=> {
-      alert(error)
-    })
-  },
-  update({dispatch} ,name){
-    firebase.auth().currentUser.updateProfile({
-      displayName: name
-    })
-    .then(user=>{
-      console.log('Update successful')
-      dispatch('checkLogin')
-
-    })
-    .catch((error)=>{
-      alert(error)
-    })
-  },
-  loginGoogle({dispatch}){
-    var provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth()
-  .signInWithPopup(provider)
-  .then(function(result) {
-    dispatch('checkLogin')
-  }).catch(function(error){
-    alert(error)
-  })
-  },
-  checkLogin({commit}) {
-    const that = this
-    firebase.auth().onAuthStateChanged(function (user){
-      if(user){
-        console.log('checklogin発火')
-        commit('getData',{uid: user.uid , email: user.email,name:user.displayName})
-        that.$router.push("/");
-      }
-    })
-  },
->>>>>>> 836932bae5b3c2f47295b91e0171dce1dcd76125
-
-  register({dispatch},payload) {
-    firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
-    .then(user=> {
-      console.log(user)
-      dispatch('update',payload.name)
-      dispatch('checkLogin')
-    }).catch(function(error){
-      alert(error)
-    })
-  },
-  logOut({commit}) {
-    firebase.auth().signOut()
-    .then(()=>{
-      commit('logOut')
-      console.log('ログアウトしました')
-    })
-    .catch((error)=> {
-      alert(error)
-    })
-  },
-}
- 
-  export const mutations = {
-    getData (state, user) {
-      state.user = user
-    },
-<<<<<<< HEAD
-
-    notLikePost({
-      dispatch
-    }, {
-      post: post,
-      uid: uid
-    }) {
-      const batch = firebase.firestore().batch()
-
-      firebase.firestore().collection('todos').doc(post).collection('likedUsers').doc(uid).get()
-        .then((ref) => {
-
             if (ref.exists) {
               console.log(ref.data())
               console.log('Likeされています')
+            } else {
+              console.log('Likeされていません')
 
-              batch.delete(
+              batch.set(
                 firebase.firestore()
                 .collection('todos')
-                .doc(post)
+                .doc(postRef)
                 .collection('likedUsers')
-                .doc(uid),
+                .doc(anotherUserRef), {
+                  id: anotherUserRef,
+                  createTime: date,
+                }
               )
 
-              batch.delete(
+              batch.set(
                 firebase.firestore()
                 .collection('users')
-                .doc(uid)
+                .doc(anotherUserRef)
                 .collection('likedPosts')
-                .doc(post),
+                .doc(postRef), {
+                  id: postRef,
+                  createTime: date
+                }
               )
 
               batch.update(
                 firebase.firestore()
                 .collection('todos')
-                .doc(post), {
-                  likePostCount: firebase.firestore.FieldValue.increment(-1)
-                })
-
+                .doc(postRef), {
+                  likePostCount: firebase.firestore.FieldValue.increment(1)
+                }
+              )
               batch.commit()
                 .then(() => {
                   dispatch('getLikedPosts', uid)
                   dispatch('getTodos', uid, {
                     root: true
                   })
-                  console.log('Like解除しました')
+                  console.log('Likeしました')
                 })
-            } else {
-              console.log('Likeされていません')
+
+              register({
+                  dispatch
+                }, payload) {
+                  firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
+                    .then(user => {
+                      console.log(user)
+                      dispatch('update', payload.name)
+                      dispatch('checkLogin')
+                    }).catch(function (error) {
+                      alert(error)
+                    })
+                },
+                logOut({
+                  commit
+                }) {
+                  firebase.auth().signOut()
+                    .then(() => {
+                      commit('logOut')
+                      console.log('ログアウトしました')
+                    })
+                    .catch((error) => {
+                      alert(error)
+                    })
+                },
             }
-          }
-        )},
+
+            export const mutations = {
+              getData(state, user) {
+                state.user = user
+              },
+
+              notLikePost({
+                dispatch
+              }, {
+                post: post,
+                uid: uid
+              }) {
+                const batch = firebase.firestore().batch()
+
+                firebase.firestore().collection('todos').doc(post).collection('likedUsers').doc(uid).get()
+                  .then((ref) => {
+
+                    if (ref.exists) {
+                      console.log(ref.data())
+                      console.log('Likeされています')
+
+                      batch.delete(
+                        firebase.firestore()
+                        .collection('todos')
+                        .doc(post)
+                        .collection('likedUsers')
+                        .doc(uid),
+                      )
+
+                      batch.delete(
+                        firebase.firestore()
+                        .collection('users')
+                        .doc(uid)
+                        .collection('likedPosts')
+                        .doc(post),
+                      )
+
+                      batch.update(
+                        firebase.firestore()
+                        .collection('todos')
+                        .doc(post), {
+                          likePostCount: firebase.firestore.FieldValue.increment(-1)
+                        })
+
+                      batch.commit()
+                        .then(() => {
+                          dispatch('getLikedPosts', uid)
+                          dispatch('getTodos', uid, {
+                            root: true
+                          })
+                          console.log('Like解除しました')
+                        })
+                    } else {
+                      console.log('Likeされていません')
+                    }
+                  })
+              },
 
 
-          getLikedPosts({
-            commit
-          }, uid) {
-            console.log('getLikedPosts取得' + uid)
-            firebase.firestore().collection('users').doc(uid).collection('likedPosts').orderBy("createTime", 'desc')
-              .get()
-              .then((res) => {
-                console.log(res)
-                const likedPosts = []
-                res.forEach(x => {
-                  likedPosts.push(x.data())
-                  console.log(x.data())
-                })
-                commit('getLikedPosts', likedPosts)
-                console.log('getLikedPosts ')
-              })
+              getLikedPosts({
+                commit
+              }, uid) {
+                console.log('getLikedPosts取得' + uid)
+                firebase.firestore().collection('users').doc(uid).collection('likedPosts').orderBy("createTime", 'desc')
+                  .get()
+                  .then((res) => {
+                    console.log(res)
+                    const likedPosts = []
+                    res.forEach(x => {
+                      likedPosts.push(x.data())
+                      console.log(x.data())
+                    })
+                    commit('getLikedPosts', likedPosts)
+                    console.log('getLikedPosts ')
+                  })
 
-          },
+              },
 
 
-          register({
-            dispatch
-          }, payload) {
-            firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
-              .then(user => {
-      
-               
-                dispatch('update', {name:payload.name,uid:
-                  firebase.auth().currentUser.uid})
-                dispatch('checkLogin')
-                dispatch('goTop')
-              }).catch(function (error) {
-                alert(error)
-              })
-          },
-          logOut({
-            commit
-          }) {
-            firebase.auth().signOut()
-              .then(() => {
-                commit('logOut')
-                console.log('ログアウトしました')
-              })
-              .catch((error) => {
-                alert(error)
-              })
-          },
-        }
+              register({
+                dispatch
+              }, payload) {
+                firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
+                  .then(user => {
 
-      export const mutations = {
-        getData(state, user) {
-          state.user = user
-        },
-        getUser(state, user) {
-          state.postUser = user
-        },
-        logOut(state) {
-          state.user = ''
 
-        },
-        updateUserName (state, name) {
-          state.postUser[0].name = name
-        },
-        updateIntroduction (state, message) {
-          state.postUser[0].introduction = message
-        },
+                    dispatch('update', {
+                      name: payload.name,
+                      uid: firebase.auth().currentUser.uid
+                    })
+                    dispatch('checkLogin')
+                    dispatch('goTop')
+                  }).catch(function (error) {
+                    alert(error)
+                  })
+              },
+              logOut({
+                commit
+              }) {
+                firebase.auth().signOut()
+                  .then(() => {
+                    commit('logOut')
+                    console.log('ログアウトしました')
+                  })
+                  .catch((error) => {
+                    alert(error)
+                  })
+              },
+            }
 
-        getLikedPosts(state, likedPosts) {
-          console.log('likedPosts:' + likedPosts)
-          state.likedPosts = likedPosts
-        },
-      }
-=======
-    logOut(state){
-      state.user = ''
-      
-    }
-  }
->>>>>>> 836932bae5b3c2f47295b91e0171dce1dcd76125
+            export const mutations = {
+              getData(state, user) {
+                state.user = user
+              },
+              getUser(state, user) {
+                state.postUser = user
+              },
+              logOut(state) {
+                state.user = ''
+
+              },
+              updateUserName(state, name) {
+                state.postUser[0].name = name
+              },
+              updateIntroduction(state, message) {
+                state.postUser[0].introduction = message
+              },
+
+              getLikedPosts(state, likedPosts) {
+                console.log('likedPosts:' + likedPosts)
+                state.likedPosts = likedPosts
+              },
+            }
