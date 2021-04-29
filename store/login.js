@@ -244,7 +244,7 @@ export const actions = {
       let date = firebase.firestore.Timestamp.now();
       const batch = firebase.firestore().batch()
 
-      firebase.firestore().collection('todos').doc(postRef).collection('likedUsers').doc(anotherUserRef).get()
+      firebase.firestore().collection('posts').doc(postRef).collection('likedUsers').doc(anotherUserRef).get()
         .then((ref) => {
 
           if (ref.exists) {
@@ -255,7 +255,7 @@ export const actions = {
 
             batch.set(
               firebase.firestore()
-              .collection('todos')
+              .collection('posts')
               .doc(postRef)
               .collection('likedUsers')
               .doc(anotherUserRef), {
@@ -277,7 +277,7 @@ export const actions = {
 
             batch.update(
               firebase.firestore()
-              .collection('todos')
+              .collection('posts')
               .doc(postRef), {
                 likePostCount: firebase.firestore.FieldValue.increment(1)
               }
@@ -285,7 +285,7 @@ export const actions = {
             batch.commit()
               .then(() => {
                 dispatch('getLikedPosts', uid)
-                dispatch('getTodos', uid, {
+                dispatch('getPosts', uid, {
                   root: true
                 })
                 console.log('Likeしました')
@@ -307,7 +307,7 @@ export const actions = {
     }) {
       const batch = firebase.firestore().batch()
 
-      firebase.firestore().collection('todos').doc(post).collection('likedUsers').doc(uid).get()
+      firebase.firestore().collection('posts').doc(post).collection('likedUsers').doc(uid).get()
         .then((ref) => {
 
             if (ref.exists) {
@@ -316,7 +316,7 @@ export const actions = {
 
               batch.delete(
                 firebase.firestore()
-                .collection('todos')
+                .collection('posts')
                 .doc(post)
                 .collection('likedUsers')
                 .doc(uid),
@@ -332,7 +332,7 @@ export const actions = {
 
               batch.update(
                 firebase.firestore()
-                .collection('todos')
+                .collection('posts')
                 .doc(post), {
                   likePostCount: firebase.firestore.FieldValue.increment(-1)
                 })
@@ -340,7 +340,7 @@ export const actions = {
               batch.commit()
                 .then(() => {
                   dispatch('getLikedPosts', uid)
-                  dispatch('getTodos', uid, {
+                  dispatch('getPosts', uid, {
                     root: true
                   })
                   console.log('Like解除しました')

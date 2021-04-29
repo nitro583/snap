@@ -4,32 +4,34 @@
     <div class="p-post__content">
       <div
         class="p-post__card"
-        v-for="(todo, index) in todos"
-        v-bind:key="todo.id"
+        v-for="(post, index) in posts"
+        v-bind:key="post.id"
       >
-        <div class="p-post__card__image"><img :src="todo.imgUrl" alt="" /></div>
+        <div class="p-post__card__image"><img :src="post.imgUrl" alt="" /></div>
         <div class="p-post__card__text">
           <div class="p-post__card__date">
             <p>
-              <fa :icon="['far', 'clock']" /> {{ todo.date.toDate() | moment }}
+              <fa :icon="['far', 'clock']" /> {{ post.date.toDate() | moment }}
             </p>
           </div>
           <div class="p-post__card__author">
             <p>
-             <NuxtLink :to="{ name: 'users-id', params: { id: todo.uid } }"><fa :icon="['fas', 'user-circle']" /> {{
-                todo.author
-              }}</NuxtLink></p>
+              <NuxtLink :to="{ name: 'users-id', params: { id: post.uid } }"
+                ><fa :icon="['fas', 'user-circle']" />
+                {{ post.author }}</NuxtLink
+              >
+            </p>
           </div>
           <div class="p-post__card__note">
-            <p>{{ todo.todo }}</p>
+            <p>{{ post.comment }}</p>
           </div>
           <div class="p-post__card__location">
-            <p><fa :icon="['fas', 'map-marker-alt']" /> {{ todo.comment }}</p>
+            <p><fa :icon="['fas', 'map-marker-alt']" /> {{ post.comment }}</p>
           </div>
         </div>
         <div class="p-post__card__button">
           <div class="p-post__card__delete">
-            <button v-on:click="deleteTodo(index)" v-if="todo.uid === user.uid">
+            <button v-on:click="deletePost(index)" v-if="post.uid === user.uid">
               <fa :icon="['fas', 'trash-alt']" />
             </button>
           </div>
@@ -37,36 +39,37 @@
             <Nuxt-link
               :to="{
                 name: 'users-uid-posts-postDetail',
-                params: { uid: todo.uid, postDetail: todo.id }
+                params: { uid: post.uid, postDetail: post.id }
               }"
               ><fa :icon="['far', 'comment']" />
             </Nuxt-link>
-
           </div>
           <div class="p-post__card__like">
-            <button v-bind:disabled='isPush'
-              v-on:click="likePost(todo.id)"
-              v-if="user.login && likedPosts.every(val => val.id !== todo.id)"
+            <button
+              v-bind:disabled="isPush"
+              v-on:click="likePost(post.id)"
+              v-if="user.login && likedPosts.every(val => val.id !== post.id)"
             >
-              <fa :icon="['fas', 'heart']" /> {{ todo.likePostCount }}
+              <fa :icon="['fas', 'heart']" /> {{ post.likePostCount }}
             </button>
             <button
-              class="is-like" v-bind:disabled='isPush'
-              v-on:click="notLikePost(todo.id)"
-              v-if="user.login && likedPosts.some(val => val.id === todo.id)"
+              class="is-like"
+              v-bind:disabled="isPush"
+              v-on:click="notLikePost(post.id)"
+              v-if="user.login && likedPosts.some(val => val.id === post.id)"
             >
-              <fa :icon="['fas', 'heart']" /> {{ todo.likePostCount }}
+              <fa :icon="['fas', 'heart']" /> {{ post.likePostCount }}
             </button>
           </div>
         </div>
       </div>
     </div>
     <div class="inputform" v-if="user.login">
-      <form v-on:submit.prevent="submitTodo">
+      <form v-on:submit.prevent="submitPost">
         <input type="file" accept="img/*" @change="changeImg" v-if="show" />
-        <input v-model="todo" type="text" placeholder="Add a comment" />
-        <input v-model="comment" type="text" placeholder="Add a location" />
-        <button type="submit">Add Todo</button>
+        <input v-model="comment" type="text" placeholder="Add a comment" />
+        <input v-model="location" type="text" placeholder="Add a location" />
+        <button type="submit">Submit</button>
       </form>
     </div>
   </div>
@@ -75,18 +78,18 @@
 export default {
   async fetch({ store }) {
     console.log("await");
-    await store.dispatch("getTodos");
+    await store.dispatch("getPosts");
   },
   //     async fetch({ store }) {
   //   await store.dispatch("getLikedPosts",user.uid);
   // },
   data() {
     return {
-      todo: "",
+      location: "",
       comment: "",
       thumbnail: "",
       show: true,
-      isPush:false,
+      isPush: false,
       postData: {
         thumbnail: ""
       }
@@ -96,9 +99,11 @@ export default {
     console.log("created");
   },
   computed: {
-    todos() {
-      console.log("computed todos");
-      return this.$store.getters["todos"];
+    // todos() {
+    //   return this.$store.getters["todos"];
+    // },
+    posts() {
+      return this.$store.getters["posts"];
     },
     getThumbnail() {
       return this.$store.getters["thumbnail"];
@@ -108,8 +113,7 @@ export default {
     },
     likedPosts() {
       return this.$store.getters["login/likedPosts"];
-    },
-
+    }
   },
 
   methods: {
@@ -127,17 +131,17 @@ export default {
         // this.submitImg(this.thumbnail)
       }
     },
-    submitTodo() {
-      if (this.thumbnail && this.todo && this.comment) {
+    submitPost() {
+      if (this.thumbnail && this.location && this.comment) {
         this.$store.dispatch("submitPost", {
-          todo: this.todo,
+          location: this.location,
           comment: this.comment,
           img: this.thumbnail,
           author: this.user.name,
           uid: this.user.uid
         });
         this.thumbnail = "";
-        this.todo = "";
+        this.location = "";
         this.comment = "";
         this.show = false;
         this.$nextTick(function() {
@@ -148,34 +152,32 @@ export default {
     getImg() {
       this.$store.dispatch("getImg", this.thumbnail);
     },
-    deleteTodo(index) {
+    deletePost(index) {
       console.log(index);
-      this.$store.dispatch("deleteTodo", this.todos[index].id);
+      this.$store.dispatch("deletePost", this.posts[index].id);
     },
-    endPush(){
-      this.isPush=false
+    endPush() {
+      this.isPush = false;
     },
     likePost(post) {
-      this.isPush = true
+      this.isPush = true;
       console.log(post);
       console.log(this.user.uid);
       this.$store.dispatch("login/likePost", {
         post: post,
         uid: this.user.uid
       });
-      setTimeout(this.endPush,1000)
+      setTimeout(this.endPush, 1000);
     },
     notLikePost(post) {
-      this.isPush = true
+      this.isPush = true;
       console.log(post);
       console.log(this.user.uid);
       this.$store.dispatch("login/notLikePost", {
         post: post,
         uid: this.user.uid
       });
-      setTimeout(this.endPush,1000)
-
-
+      setTimeout(this.endPush, 1000);
     },
     liked(post) {
       const arr = Object.entries(likedPosts);
@@ -187,10 +189,10 @@ export default {
         return false;
       }
     },
-    updateTodo() {
-      if (this.todo) {
-        this.$store.dispatch("updateTodo", this.todo);
-        this.todo = "";
+    updatePost() {
+      if (this.post) {
+        this.$store.dispatch("updatePost", this.post);
+        this.post = "";
       }
     }
   }

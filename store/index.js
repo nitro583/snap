@@ -2,6 +2,7 @@ import firebase from '@/plugins/firebase'
 
 export const state = () => ({
   todos: [],
+  posts:[],
   post: [],
   postComments: [],
   likedUsers:[],
@@ -11,6 +12,9 @@ export const state = () => ({
 export const getters = {
   todos: state => {
     return state.todos
+  },
+  posts: state=> {
+    return state.posts
   },
   post: state => {
     return state.post
@@ -27,18 +31,18 @@ export const getters = {
 }
 
 export const actions = {
-  getTodos({
+  getPosts({
     commit
-  }, todo) {
-    firebase.firestore().collection('todos').orderBy("date", 'desc')
+  }) {
+    firebase.firestore().collection('posts').orderBy("date", 'desc')
       .get()
       .then((res) => {
-        const todos = []
+        const posts = []
         res.forEach(x => {
-          todos.push(x.data())
+          posts.push(x.data())
           console.log(x.data())
         })
-        commit('getTodos', todos)
+        commit('getPosts', posts)
         console.log('commit')
 
       })
@@ -48,7 +52,7 @@ export const actions = {
     commit
   }, postId) {
     console.log('postID' + postId)
-    firebase.firestore().collection('todos').doc(postId)
+    firebase.firestore().collection('posts').doc(postId)
       .get()
       .then((res) => {
         const post = []
@@ -74,7 +78,7 @@ export const actions = {
     commit
   }, postId) {
     console.log('comments取得用postID' + postId)
-    firebase.firestore().collection('todos').doc(postId).collection('comments').orderBy("date", 'desc').get()
+    firebase.firestore().collection('posts').doc(postId).collection('comments').orderBy("date", 'desc').get()
       .then((res) => {
         const postComments = []
         res.forEach(x => {
@@ -103,21 +107,21 @@ export const actions = {
       console.log('getLikedPosts ')})
 
   },
-  submitTodo({
-    dispatch
-  }, todo) {
-    firebase.firestore().collection('todos').add({})
-      .then((res) => {
-        firebase.firestore().collection('todos').doc(res.id)
-          .set({
-            todo: todo,
-            id: res.id,
-          }).then(() => {
-            dispatch('getTodos', todo)
-            console.log(todo, res.id)
-          })
-      })
-  },
+  // submitTodo({
+  //   dispatch
+  // }, todo) {
+  //   firebase.firestore().collection('todos').add({})
+  //     .then((res) => {
+  //       firebase.firestore().collection('todos').doc(res.id)
+  //         .set({
+  //           todo: todo,
+  //           id: res.id,
+  //         }).then(() => {
+  //           dispatch('getTodos', todo)
+  //           console.log(todo, res.id)
+  //         })
+  //     })
+  // },
   submitComment({
     dispatch
   }, {
@@ -127,9 +131,9 @@ export const actions = {
     postId: postId
   }) {
     let date = firebase.firestore.Timestamp.now();
-    firebase.firestore().collection('todos').doc(postId).collection('comments').add({})
+    firebase.firestore().collection('posts').doc(postId).collection('comments').add({})
       .then((res) => {
-        firebase.firestore().collection('todos').doc(postId).collection('comments').doc(res.id)
+        firebase.firestore().collection('posts').doc(postId).collection('comments').doc(res.id)
           .set({
             comment: comment,
             id: res.id,
@@ -149,12 +153,12 @@ export const actions = {
 
 
 
-  deleteTodo({
+  deletePost({
     dispatch
   }, id) {
-    firebase.firestore().collection('todos').doc(id).delete()
+    firebase.firestore().collection('posts').doc(id).delete()
       .then((res) => {
-        dispatch('getTodos')
+        dispatch('getPosts')
         console.log('削除しました')
       })
   },
@@ -164,13 +168,13 @@ export const actions = {
   updateTodo({
     dispatch
   }, id) {
-    firebase.firestore().collection('todos').doc(id)
+    firebase.firestore().collection('posts').doc(id)
       .update({
-        todo: todo,
+        post: post,
       })
       .then(() => {
-        dispatch('getTodos', todo)
-        console.log(todo, res.id)
+        dispatch('getPosts', post)
+        console.log(post, res.id)
       })
   },
 
@@ -202,7 +206,7 @@ export const actions = {
   submitPost({
     dispatch
   }, {
-    todo: todo,
+    location: location,
     comment: comment,
     img: img,
     author: author,
@@ -211,19 +215,19 @@ export const actions = {
     let imgName = ''
     let imgUrl = ''
     let date = firebase.firestore.Timestamp.now();
-    firebase.firestore().collection('todos').add({})
+    firebase.firestore().collection('posts').add({})
       .then((res) => {
-        firebase.firestore().collection('todos').doc(res.id)
+        firebase.firestore().collection('posts').doc(res.id)
           .set({
-            todo: todo,
+            location: location,
             comment: comment,
             author: author,
             uid: uid,
             id: res.id,
             date: date,
           }).then(() => {
-            dispatch('getTodos', todo)
-            console.log(todo, res.id)
+            dispatch('getPosts')
+            console.log(comment, res.id)
             imgName = res.id
             let storage = firebase.storage()
             let storageRef = storage.ref().child(imgName)
@@ -234,12 +238,12 @@ export const actions = {
                   .then(res => {
                     console.log(res)
                     imgUrl = res
-                    firebase.firestore().collection('todos').doc(imgName)
+                    firebase.firestore().collection('posts').doc(imgName)
                       .update({
                         imgUrl: imgUrl,
                       }).then(() => {
-                        dispatch('getTodos', todo)
-                        console.log(todo, comment, imgUrl)
+                        dispatch('getPosts')
+                        console.log(comment, location, imgUrl)
                       })
                   })
                   .catch(error => console.log(error))
@@ -256,6 +260,9 @@ export const actions = {
 export const mutations = {
   getTodos(state, todos) {
     state.todos = todos
+  },
+  getPosts(state, posts) {
+    state.posts = posts
   },
   getPost(state, post) {
     console.log('post:' + post)
@@ -274,7 +281,7 @@ export const mutations = {
     console.log('likedPosts:' + likedPosts)
     state.likedPosts = likedPosts
   },
-  deleteTodo(state, index) {
+  deletePost(state, index) {
     state.todos.splice(index, 1)
   },
 }
