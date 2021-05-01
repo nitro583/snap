@@ -26,7 +26,7 @@
             <p>{{ post.comment }}</p>
           </div>
           <div class="p-post__card__location">
-            <p><fa :icon="['fas', 'map-marker-alt']" /> {{ post.comment }}</p>
+            <p><fa :icon="['fas', 'map-marker-alt']" /> {{ post.location}}</p>
           </div>
         </div>
         <div class="p-post__card__button">
