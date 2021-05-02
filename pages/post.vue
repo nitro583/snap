@@ -16,8 +16,8 @@
           </div>
           <div class="p-post__card__author">
             <p>
-              <NuxtLink :to="{ name: 'users-id', params: { id: post.uid } }"
-                ><fa :icon="['fas', 'user-circle']" />
+              <NuxtLink :to="{ name: 'users-id', params: { id: post.uid } }">
+                <fa :icon="['fas', 'user-circle']" />
                 {{ post.author }}</NuxtLink
               >
             </p>
@@ -26,7 +26,7 @@
             <p>{{ post.comment }}</p>
           </div>
           <div class="p-post__card__location">
-            <p><fa :icon="['fas', 'map-marker-alt']" /> {{ post.location}}</p>
+            <p><fa :icon="['fas', 'map-marker-alt']" /> {{ post.location }}</p>
           </div>
         </div>
         <div class="p-post__card__button">
@@ -41,7 +41,8 @@
                 name: 'users-uid-posts-postDetail',
                 params: { uid: post.uid, postDetail: post.id }
               }"
-              ><fa :icon="['far', 'comment']" />
+            >
+              <fa :icon="['far', 'comment']" />
             </Nuxt-link>
           </div>
           <div class="p-post__card__like">
@@ -64,17 +65,48 @@
         </div>
       </div>
     </div>
-    <div class="inputform" v-if="user.login">
-      <form v-on:submit.prevent="submitPost">
-        <input type="file" accept="img/*" @change="changeImg" v-if="show" />
-        <input v-model="comment" type="text" placeholder="Add a comment" />
-        <input v-model="location" type="text" placeholder="Add a location" />
-        <button type="submit">Submit</button>
-      </form>
+    <div class="">
+      <button class='c-button p-post__submit-button' @click="openModal">写真を投稿する</button>
     </div>
+    <transition name="modal">
+      <div v-show="showModal" @click.self="closeModal" class="p-post__modal">
+        <div class="p-post__modal__content">
+          <div class="p-post__closeButton" @click="closeModal"></div>
+          <h3 class="p-post__modal__h3">写真を投稿する</h3>
+          <form v-on:submit.prevent="submitPost">
+            <div class="p-post__modal__image">
+              <image-input :show="imgShow" v-model="image" />
+            </div>
+            <div class="p-post__modal__comment">
+              <textarea
+                class="c-input  p-post__modal__input"
+                v-model="comment"
+                type="text"
+                placeholder="Add a comment"
+              />
+            </div>
+            <div class="p-post__modal__location">
+              <input
+                class="c-input"
+                v-model="location"
+                type="text"
+                placeholder="Add a location"
+              />
+            </div>
+            <div class="p-post__modal__button-area">
+              <button 
+              class='c-button p-post__modal__button'
+              type="submit">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
+
 <script>
+import ImageInput from "@/components/imageInput.vue";
 export default {
   async fetch({ store }) {
     console.log("await");
@@ -92,11 +124,20 @@ export default {
       isPush: false,
       postData: {
         thumbnail: ""
-      }
+      },
+      show: true,
+      imgShow: false,
+      showModal: false,
+      scrollLock: "",
+      error: "",
+      image: {}
     };
   },
   created() {
     console.log("created");
+  },
+  components: {
+    ImageInput
   },
   computed: {
     // todos() {
@@ -117,6 +158,17 @@ export default {
   },
 
   methods: {
+    openModal() {
+      this.showModal = true;
+      this.scrollLock = "lock";
+    },
+    closeModal() {
+      this.showModal = false;
+      this.scrollLock = "";
+
+      this.$store.dispatch("login/getUser", this.user.uid);
+    },
+
     changeImg(e) {
       this.thumbnail = e.target.files[0];
       console.log(this.thumbnail);
@@ -132,11 +184,11 @@ export default {
       }
     },
     submitPost() {
-      if (this.thumbnail && this.location && this.comment) {
+      if (this.image && this.location && this.comment) {
         this.$store.dispatch("submitPost", {
           location: this.location,
           comment: this.comment,
-          img: this.thumbnail,
+          img: this.image.src,
           author: this.user.name,
           uid: this.user.uid
         });
@@ -144,6 +196,7 @@ export default {
         this.location = "";
         this.comment = "";
         this.show = false;
+        this.closeModal();
         this.$nextTick(function() {
           this.show = true;
         });
@@ -198,4 +251,5 @@ export default {
   }
 };
 </script>
+
 <style></style>
