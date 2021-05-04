@@ -24,7 +24,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: ['@/plugins/firebase.js' ,{ src: '@/plugins/vee-validate'},
-  { src: '~/plugins/moment-filter', ssr: false }
+  { src: '~/plugins/moment-filter', ssr: false },
+  { src: '~/plugins/infiniteloading', ssr: false }
+
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

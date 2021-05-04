@@ -103,6 +103,7 @@ export default {
       thumbnail: "",
       show: true,
       isPush:false,
+      count: 6,
       user: {
         name: "",
         email: "",
@@ -128,7 +129,7 @@ export default {
       return this.$store.getters["login/likedPosts"];
     },
     recentPosts(){
-      return this.todos.slice(0,3)
+      return this.todos.slice(0,this.count)
     }
   },
   methods: {

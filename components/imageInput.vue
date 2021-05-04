@@ -1,5 +1,6 @@
 <template>
   <div class="image-input">
+       
     <div
       class="image-input__field"
       :class="{ over: isDragOver }"
@@ -11,6 +12,8 @@
       <p v-if='!this.imgShow' class="image-input__icon"><fa :icon="['fas', 'camera']" /></p>
       <input type="file" title @change="onChange" />
     </div>
+           
+    
   </div>
 </template>
 
@@ -93,6 +96,7 @@ export default {
       this.image = image;
       this.thumbnail = image.src;
       this.imgShow= true;
+      this.$emit('loadImage');
     }
   }
 };
