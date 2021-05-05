@@ -23,7 +23,7 @@
       <div class="p-index__about__right"></div>
     </div>
     <div class="p-index__recent-snaps">
-      <h3 class="p-index__recent-snaps__title">aa{{user.uid}}Recent Snaps</h3>
+      <h3 class="p-index__recent-snaps__title">Recent Snaps</h3>
       <div
         class="p-post__card"
         v-for="(post, index) in recentPosts"
