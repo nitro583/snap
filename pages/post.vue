@@ -97,7 +97,7 @@
                   rules="required|max:200"
                   name="Comment"
                 >
-                <p v-show="errors.length" class="p-id__profile__edit__error">
+                <p v-show="errors.length" class="p-post__modal__error">
                     {{ errors[0] }}
                   </p>
               <textarea
@@ -115,7 +115,7 @@
                   rules="required|max:30"
                   name="Location"
                 >
-                <p v-show="errors.length" class="p-id__profile__edit__error">
+                <p v-show="errors.length" class="p-post__modal__error">
                     {{ errors[0] }}
                   </p>
               <input
@@ -147,6 +147,13 @@ export default {
   async fetch({ store }) {
     console.log("await");
     await store.dispatch("getPosts");
+  },
+    head() {
+    return {
+      bodyAttrs: {
+        class: this.scrollLock
+      }
+    };
   },
   //     async fetch({ store }) {
   //   await store.dispatch("getLikedPosts",user.uid);

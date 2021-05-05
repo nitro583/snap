@@ -18,6 +18,11 @@ $bgc: #888;
 html{
   font-family: 'Noto Sans JP', sans-serif;
 }
+
+body.lock{
+  overflow: hidden;
+  height: 100vh;
+}
 h1{
   font-size: 24px;
 }
