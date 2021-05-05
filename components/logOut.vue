@@ -1,7 +1,7 @@
 <template>
   <div>
 
-          <button v-if='user.login' @click='logOut'>Logout</button>
+          <a href='' v-if='user.login' @click.prevent='logOut'>Logout</a>
   </div>
 </template>
 

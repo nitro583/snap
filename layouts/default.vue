@@ -19,12 +19,10 @@
             <li class="l-header__nav__item" v-if="!user.login">
               <NuxtLink to="/login">Login</NuxtLink>
             </li>
-            <li class="l-header__nav__item" v-if="user.login">
-              <NuxtLink :to="{ name: 'users-id', params: { id: user.uid } }">{{
-                user.name
-              }}</NuxtLink>
-            </li>
             <li class="l-header__nav__item"><logOut></logOut></li>
+            <li class="l-header__nav__item" v-if="user.login">
+              <NuxtLink :to="{ name: 'users-id', params: { id: user.uid } }"><img class='l-header__nav__icon' v-if='user.icon' :src="user.icon" :alt="user.name"><img class='l-header__nav__icon' v-else src="~/assets/icon.png" :alt="user.name" /></NuxtLink>
+            </li>
           </ul>
         </div>
       </div>
