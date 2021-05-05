@@ -92,24 +92,33 @@
       display: flex;
       justify-content: space-between;
       text-align: center;
-      padding-top: 15px;
       padding-bottom: 10px;
       font-size: 14px;
+      width: 100%;
+      button{
+        width: 100%;
+      }
+      a{
+        display: block;
+        width: 100%;
+      }
     }
 
     &__delete {
-      width: calc(100% / 3);
+      display: block;
+      width: calc(100% / 3 - 10px);
       opacity: 0.7;
       transition: 0.3s;
-
+      margin-left: 10px;
       &:hover {
         opacity: 1;
+        background-color: #ddd;
       }
     }
 
     &__comment {
-      width: calc(100% / 3);
-
+      width: calc(100% / 3 - 10px);
+      margin: 0 5px;
       a {
 
         opacity: 0.7;
@@ -117,18 +126,20 @@
 
         &:hover {
           opacity: 1;
+          background-color: #ddd;
         }
       }
     }
 
     &__like {
-      width: calc(100% / 3);
+      width: calc(100% / 3 - 10px);
+      margin-right: 10px;
       opacity: 0.7;
       transition: 0.3s;
 
       &:hover {
         opacity: 1;
-        color:red;
+        background-color: #ddd;
       }
     }
 
