@@ -29,7 +29,7 @@
             <p><fa :icon="['fas', 'map-marker-alt']" /> {{ post.location }}</p>
           </div>
         </div>
-        <div class="p-post__card__button">
+        <div  v-if='user.login' class="p-post__card__button">
           <div class="p-post__card__delete">
             <button v-on:click="deletePost(index)" v-if="post.uid === user.uid">
               <fa :icon="['fas', 'trash-alt']" />
@@ -64,16 +64,15 @@
           </div>
         </div>
       </div>
-
     </div>
-          <infinite-loading
-        ref="infiniteLoading"
-        spinner="spiral"
-        @infinite="infiniteHandler"
-      >
-        <span slot="no-more">全てのPostの読み込みが完了しました。</span>
-      </infinite-loading>
-    <div v-if='user.login' class="">
+    <infinite-loading
+      ref="infiniteLoading"
+      spinner="spiral"
+      @infinite="infiniteHandler"
+    >
+      <span slot="no-more">全てのPostの読み込みが完了しました。</span>
+    </infinite-loading>
+    <div v-if="user.login" class="">
       <button class="c-button p-post__submit-button" @click="openModal">
         写真を投稿する
       </button>
@@ -84,15 +83,16 @@
           <div class="p-post__closeButton" @click="closeModal"></div>
           <h3 class="p-post__modal__h3">写真を投稿する</h3>
           <validation-observer v-slot="{ invalid, passes }">
-          <form v-on:submit.prevent="passes(submitPost)">
-            <div class="p-post__modal__image">
-            
-
-              <image-input @loadImage='loadImage' :show="imgShow" v-model="image" />
-
-            </div>
-            <div class="p-post__modal__comment">
-                              <validation-provider
+            <form v-on:submit.prevent="passes(submitPost)">
+              <div class="p-post__modal__image">
+                <image-input
+                  @loadImage="loadImage"
+                  :show="imgShow"
+                  v-model="image"
+                />
+              </div>
+              <div class="p-post__modal__comment">
+                <validation-provider
                   v-slot="{ errors }"
                   rules="required|max:200"
                   name="Comment"
@@ -100,17 +100,16 @@
                 <p v-show="errors.length" class="p-post__modal__error">
                     {{ errors[0] }}
                   </p>
-              <textarea
-                class="c-input  p-post__modal__input"
-                v-model="comment"
-                type="text"
-                placeholder="Add a comment"
-              />
-              
-              </validation-provider>
-            </div>
-            <div class="p-post__modal__location">
-                 <validation-provider
+                  <textarea
+                    class="c-input  p-post__modal__input"
+                    v-model="comment"
+                    type="text"
+                    placeholder="Add a comment"
+                  />
+                </validation-provider>
+              </div>
+              <div class="p-post__modal__location">
+                <validation-provider
                   v-slot="{ errors }"
                   rules="required|max:30"
                   name="Location"
@@ -118,23 +117,21 @@
                 <p v-show="errors.length" class="p-post__modal__error">
                     {{ errors[0] }}
                   </p>
-              <input
-                class="c-input"
-                v-model="location"
-                type="text"
-                placeholder="Add a location"
-              />
-              </validation-provider>
-
-            </div>
-            <div class="p-post__modal__button-area">
-              <button class="c-button p-post__modal__button" type="submit">
-                Submit
-              </button>
-            </div>
-          </form>
+                  <input
+                    class="c-input"
+                    v-model="location"
+                    type="text"
+                    placeholder="Add a location"
+                  />
+                </validation-provider>
+              </div>
+              <div class="p-post__modal__button-area">
+                <button class="c-button p-post__modal__button" type="submit">
+                  Submit
+                </button>
+              </div>
+            </form>
           </validation-observer>
-
         </div>
       </div>
     </transition>
@@ -174,7 +171,7 @@ export default {
       scrollLock: "",
       error: "",
       image: {},
-      count: 6,
+      count: 6
     };
   },
   created() {
@@ -190,8 +187,8 @@ export default {
     posts() {
       return this.$store.getters["posts"];
     },
-        recentPosts(){
-      return this.posts.slice(0,this.count)
+    recentPosts() {
+      return this.posts.slice(0, this.count);
     },
     getThumbnail() {
       return this.$store.getters["thumbnail"];
@@ -214,20 +211,20 @@ export default {
       this.scrollLock = "";
       this.$store.dispatch("login/getUser", this.user.uid);
     },
-    loadImage(){
+    loadImage() {
       this.imgShow = true;
-      console.log(this.imgShow)
+      console.log(this.imgShow);
     },
-      infiniteHandler() {
-    setTimeout(() => {
-      if (this.count < this.posts.length) {
-        this.count += 6
-        this.$refs.infiniteLoading.stateChanger.loaded()
-      } else {
-        this.$refs.infiniteLoading.stateChanger.complete()
-      }
-    }, 1000)
-  },
+    infiniteHandler() {
+      setTimeout(() => {
+        if (this.count < this.posts.length) {
+          this.count += 6;
+          this.$refs.infiniteLoading.stateChanger.loaded();
+        } else {
+          this.$refs.infiniteLoading.stateChanger.complete();
+        }
+      }, 1000);
+    },
 
     changeImg(e) {
       this.thumbnail = e.target.files[0];
@@ -260,7 +257,6 @@ export default {
         this.$nextTick(function() {
           this.show = true;
           this.imgShow = false;
-
         });
       }
     },
