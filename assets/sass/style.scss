@@ -17,6 +17,7 @@
 $bgc: #888;
 html{
   font-family: 'Noto Sans JP', sans-serif;
+  font-size: 16px;
 }
 
 body.lock{
@@ -24,19 +25,40 @@ body.lock{
   height: 100vh;
 }
 h1{
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 h2{
   font-size: 3rem;
   color: rgba(0,68, 131);
+  @include mq() {
+      font-size: 2rem;
+  }
+
+  @include mq(sm) {
+font-size: 1.5rem;
+  }
 }
 h3{
   font-size: 3rem;
   color: rgba(0,68, 131);
+  @include mq() {
+    font-size: 2rem;
+}
+
+@include mq(sm) {
+font-size: 1.5rem;
+}
 }
 p{
-  font-size: 16px;
+  font-size: 1rem;
   color: #333;
+  @include mq() {
+    font-size: 0.9rem;
+}
+
+@include mq(sm) {
+font-size: 0.8rem;
+}
 }
 
 a {

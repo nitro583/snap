@@ -34,19 +34,36 @@
       font-family: 'Noto Serif JP', serif;
       font-weight: 300;
       margin-top: 180px;
-      font-size: 45px;
-     
+      font-size: 3rem;
       font-kerning: normal;
       color: #fff;
       text-shadow:     black 1px 1px 10px, black -1px 1px 10px,
       black 1px -1px 10px, black -1px -1px 10px;
       letter-spacing: 0.05em;
+
+      @include mq() {
+        font-size: 2rem;
+      }
+  
+      @include mq(sm) {
+        font-size: 1.5rem;
+      }
+
     }
     p.c-index__lead{
-      font-size: 18px;
+      font-size: 1.5rem;
         color: #fff;
         text-shadow:     black 1px 1px 10px, black -1px 1px 10px,
         black 1px -1px 10px, black -1px -1px 10px;
+
+        @include mq() {
+          font-size: 1rem;
+        }
+    
+        @include mq(sm) {
+          font-size: 1rem;
+        }
+
     }
 
   }
@@ -57,19 +74,37 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+
     &__title{
       width: 100%;
-      height: 80px;
+   
+      @include mq() {
+        font-size: 2.5rem;
+      }
+  
+      @include mq(sm) {
+        font-size: 1.5rem;
+      }
     }
     &__left{
       width: 45%;
-      height: 400px;
+      
       background-color: #fff;
+      @include mq(sm) {
+       width: 100%;
+      }
+
       p {
         text-justify: inter-ideograph;
         text-align: justify;
-        line-height: 2em;
-        letter-spacing: 0.02em;
+        line-height: 2rem;
+        letter-spacing: 0.02rem;
+        font-size: 1rem;
+        @include mq() {
+          font-size: 0.9rem;
+          line-height:1.9rem;
+          letter-spacing: 0.01em
+        }
       };
     }
     &__right{
@@ -78,6 +113,15 @@
       background-size: cover;
     background-position: center;
     background-image: url(~@/assets/img/main2.JPG) ;
+
+    @include mq() {
+      
+    }
+
+    @include mq(sm) {
+      width: 100%;
+      height: 250px;
+    }
     }
   }
   &__recent-snaps{
@@ -91,6 +135,13 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    @include mq() {
+      margin-top: 80px;
+    }
+
+    @include mq(sm) {
+      margin-top: 50px;
+    }
   }
   &__more{
     width: 100%;
