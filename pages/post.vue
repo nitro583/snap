@@ -260,9 +260,9 @@ export default {
         });
       }
     },
-    getImg() {
-      this.$store.dispatch("getImg", this.thumbnail);
-    },
+    // getImg() {
+    //   this.$store.dispatch("getImg", this.thumbnail);
+    // },
     deletePost(index) {
       console.log(index);
       this.$store.dispatch("deletePost", this.posts[index].id);
@@ -290,22 +290,22 @@ export default {
       });
       setTimeout(this.endPush, 1000);
     },
-    liked(post) {
-      const arr = Object.entries(likedPosts);
-      const result = arr.find(([id, data]) => data.id === post);
-      console.log(result);
-      if (result === undefined) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    updatePost() {
-      if (this.post) {
-        this.$store.dispatch("updatePost", this.post);
-        this.post = "";
-      }
-    }
+    // liked(post) {
+    //   const arr = Object.entries(likedPosts);
+    //   const result = arr.find(([id, data]) => data.id === post);
+    //   console.log(result);
+    //   if (result === undefined) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // },
+    // updatePost() {
+    //   if (this.post) {
+    //     this.$store.dispatch("updatePost", this.post);
+    //     this.post = "";
+    //   }
+    // }
   }
 };
 </script>

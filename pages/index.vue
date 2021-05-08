@@ -53,7 +53,7 @@
         </div>
         <div v-if='user.login' class="p-post__card__button">
           <div class="p-post__card__delete">
-            <button v-on:click="deleteTodo(index)" v-if="post.uid === user.uid">
+            <button v-on:click="deletePost(index)" v-if="post.uid === user.uid">
               <fa :icon="['fas', 'trash-alt']" />
             </button>
           </div>
@@ -130,27 +130,34 @@ export default {
     }
   },
   methods: {
-    //     submit() {
-    // const db = firebase.firestore()
-    //       let dbUsers = db.collection("users");
-    //       dbUsers
-    //         .add({
-    //           name: this.user.name,
-    //           email: this.user.email,
-    //         })
-    //         .then((ref) => {
-    //           console.log("ADD ID: ", ref.id);
-    //         });
-    //     },
-    // getData () {
-    //   const db = firebase.firestore()
-    //   let docUsers = db.collection('users').doc('Uq8Yne3Z7JMORW53wDHn')
-    //   let dbData = []
-    //   this.dbData =dbData
-    //   docUsers.get().then(function(doc) {
-    //     dbData.push(doc.data().name)
-    //   })
-    // }
+deletePost(index) {
+      console.log(index);
+      this.$store.dispatch("deletePost", this.posts[index].id);
+    },
+    endPush() {
+      this.isPush = false;
+    },
+    likePost(post) {
+      this.isPush = true;
+      console.log(post);
+      console.log(this.user.uid);
+      this.$store.dispatch("login/likePost", {
+        post: post,
+        uid: this.user.uid
+      });
+      setTimeout(this.endPush, 1000);
+    },
+    notLikePost(post) {
+      this.isPush = true;
+      console.log(post);
+      console.log(this.user.uid);
+      this.$store.dispatch("login/notLikePost", {
+        post: post,
+        uid: this.user.uid
+      });
+      setTimeout(this.endPush, 1000);
+    },
+
   }
 };
 </script>
