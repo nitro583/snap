@@ -96,11 +96,15 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
 export default {
-  async fetch({ store }) {
-    console.log("await");
-    await store.dispatch("getPosts");
-  },
+  // async fetch({ store }) {
+  //   if(store.getters['posts'].length){
+  //     return
+  //   }
+  //   await store.dispatch("getPosts");
+  //   console.log("await");
+  // },
   data() {
     return {
       location: "",
@@ -111,12 +115,16 @@ export default {
       count: 6,
     };
   },
+ created() {
+    this.$store.dispatch("getPosts");
+    console.log("created");
+  },
   computed: {
-    todos() {
-      console.log("computed todos");
-      return this.$store.getters["todos"];
-    },
+    ...mapGetters(['posts']),
     posts() {
+      console.log("computed");
+      const posts = this.$store.getters["posts"];
+      console.log(posts);
       return this.$store.getters["posts"];
     },
     user() {
@@ -129,6 +137,12 @@ export default {
       return this.posts.slice(0, this.count);
     }
   },
+  //   watch:{
+  //   posts(){
+  //     this.$nextTick(()=>
+  //     console.log('変更されました'))
+  //   }
+  // },
   methods: {
 deletePost(index) {
       console.log(index);

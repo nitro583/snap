@@ -65,13 +65,7 @@
         </div>
       </div>
     </div>
-    <infinite-loading
-      ref="infiniteLoading"
-      spinner="spiral"
-      @infinite="infiniteHandler"
-    >
-      <span slot="no-more">全てのPostの読み込みが完了しました。</span>
-    </infinite-loading>
+
     <div v-if="user.login" class="">
       <button class="c-button p-post__submit-button" @click="openModal">
         写真を投稿する
@@ -135,6 +129,13 @@
         </div>
       </div>
     </transition>
+        <infinite-loading
+      ref="infiniteLoading"
+      spinner="spiral"
+      @infinite="infiniteHandler"
+    >
+      <span slot="no-more">全てのPostの読み込みが完了しました。</span>
+    </infinite-loading>
   </div>
 </template>
 
@@ -175,10 +176,20 @@ export default {
     };
   },
   created() {
+    this.$store.dispatch("getPosts");
     console.log("created");
+  },
+  mounted(){
+    // this.$store.dispatch("getPosts");
   },
   components: {
     ImageInput
+  },
+  watch:{
+    // posts(){
+    //   this.$nextTick(()=>
+    //   console.log('変更されました'))
+    // }
   },
   computed: {
     // todos() {

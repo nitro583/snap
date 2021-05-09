@@ -1,11 +1,10 @@
 import firebase from '@/plugins/firebase'
 
 export const state = () => ({
-  todos: [],
-  posts:[],
+  posts: [],
   post: [],
   postComments: [],
-  likedUsers:[],
+  likedUsers: [],
 
 })
 
@@ -13,7 +12,8 @@ export const getters = {
   todos: state => {
     return state.todos
   },
-  posts: state=> {
+  posts: state => {
+    console.log('getters')
     return state.posts
   },
   post: state => {
@@ -34,21 +34,17 @@ export const actions = {
   getPosts({
     commit
   }) {
-    firebase.firestore().collection('posts').orderBy("date", 'desc')
-      .get()
-      .then((res) => {
-        const posts = []
-        res.forEach(x => {
-          posts.push(x.data())
-          console.log(x.data())
-        })
-        commit('getPosts', posts)
-        console.log('commit')
-
+    firebase.firestore().collection('posts').orderBy("date", 'desc').get().then((res) => {
+      const posts = []
+      res.forEach(x => {
+        posts.push(x.data())
       })
+      console.log('commit')
+      commit('getPosts', posts)
+    })
   },
 
-  getPost({
+  async getPost({
     commit
   }, postId) {
     console.log('postID' + postId)
@@ -96,15 +92,16 @@ export const actions = {
     commit
   }, uid) {
     firebase.firestore().collection('users').doc(uid).collection(likedPosts).orderBy("createTime", 'desc')
-    .get()
-    .then((res) => {
-      const likedPosts = []
-      res.forEach(x => {
-        likedPosts.push(x.data())
-        console.log(x.data())
+      .get()
+      .then((res) => {
+        const likedPosts = []
+        res.forEach(x => {
+          likedPosts.push(x.data())
+          console.log(x.data())
+        })
+        commit('getLikedPosts', likedPosts)
+        console.log('getLikedPosts ')
       })
-      commit('getLikedPosts', likedPosts)
-      console.log('getLikedPosts ')})
 
   },
   // submitTodo({
@@ -140,7 +137,7 @@ export const actions = {
             uid: uid,
             author: author,
             date: date,
-            likePostCount:0
+            likePostCount: 0
 
           }).then(() => {
             dispatch('getPostComments', postId)
@@ -148,8 +145,8 @@ export const actions = {
           })
       })
   },
- 
- 
+
+
 
 
 
@@ -231,7 +228,7 @@ export const actions = {
             imgName = res.id
             let storage = firebase.storage()
             let storageRef = storage.ref().child(imgName)
-            storageRef.putString(img,'data_url')
+            storageRef.putString(img, 'data_url')
               .then((res) => {
                 console.log(res)
                 storageRef.getDownloadURL()
@@ -263,6 +260,7 @@ export const mutations = {
   },
   getPosts(state, posts) {
     state.posts = posts
+    console.log('mutations')
   },
   getPost(state, post) {
     console.log('post:' + post)
