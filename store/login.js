@@ -1,16 +1,10 @@
+import { faCaretSquareLeft } from '@fortawesome/free-solid-svg-icons'
 import firebase from '~/plugins/firebase'
 
 
 export const state = () => ({
   user:[],
   postUser:[],
-  // user: {
-  //   uid: '',
-  //   email: '',
-  //   name: '',
-  //   icon: '',
-  //   login: false,
-  // },
   likedPosts: [],
 
 })
@@ -71,9 +65,6 @@ export const actions = {
               console.log('profile updated.')
             })
 
-
-
-
           dispatch('checkLogin')
 
         })
@@ -133,8 +124,6 @@ export const actions = {
       let storage = firebase.storage()
       let storageRef = storage.ref().child('/icon/' + uid)
       storageRef.putString(img, 'data_url')
-      // storageRef.put(img)
-
         .then((res) => {
           console.log(res)
           storageRef.getDownloadURL()
@@ -188,12 +177,29 @@ export const actions = {
     loginGoogle({
       dispatch
     }) {
+      const batch = firebase.firestore().batch()
       var provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth()
         .signInWithPopup(provider)
         .then(function (result) {
-          dispatch('checkLogin')
-          dispatch('goTop')
+
+            batch.set(
+              firebase.firestore()
+              .collection('users')
+              .doc(result.user.uid), {
+                uid: result.user.uid,
+                name: result.user.displayName,
+                photoURL: result.user.photoURL
+              }, { merge: true }
+            )
+            batch.commit()
+              .then(() => {
+                dispatch('getUser',result.user.uid)
+                console.log('profile updated.')
+                dispatch('checkLogin')
+                dispatch('goTop')
+              })
+
         }).catch(function (error) {
           alert(error)
         })
@@ -206,7 +212,7 @@ export const actions = {
         if (user) {
           console.log('checklogin発火')
           console.log(user.displayName)
-
+console.log('ユーザーアイコン' + user.photoURL)
           commit('getData', {
             uid: user.uid,
             email: user.email,
@@ -221,16 +227,7 @@ export const actions = {
     goTop() {
       this.$router.push("/");
     },
-    // getUser({dispatch},{uid}){
-    //   firebase.auth().getUser(uid).then(function(user) { 
-    //     console.log(user.displayName)
-    //     commit('getUser', {
-    //       uid: user.uid,
-    //       name: user.displayName,
-    //       icon: user.photoURL,
-    //     })
-    //   }
-    //   )},
+  
     likePost({
       dispatch
     }, {
@@ -294,7 +291,6 @@ export const actions = {
           }
         })
         .catch((error) => {
-          // 追加
           console.log(error)
         })
     },
@@ -377,8 +373,7 @@ export const actions = {
           }, payload) {
             firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
               .then(user => {
-      
-               
+
                 dispatch('update', {name:payload.name,uid:
                   firebase.auth().currentUser.uid})
                 dispatch('checkLogin')
