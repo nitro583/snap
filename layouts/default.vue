@@ -80,6 +80,10 @@ export default {
   components: {
     logOut
   },
+  
+ created() {
+    this.$store.dispatch("login/checkLogin");
+  },
   computed: {
     user() {
       return this.$store.getters["login/user"];
