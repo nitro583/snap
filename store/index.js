@@ -128,21 +128,16 @@ export const actions = {
     postId: postId
   }) {
     let date = firebase.firestore.Timestamp.now();
-    firebase.firestore().collection('posts').doc(postId).collection('comments').add({})
+    firebase.firestore().collection('posts').doc(postId).collection('comments').add({            
+      comment: comment,
+      uid: uid,
+      author: author,
+      date: date,})
       .then((res) => {
-        firebase.firestore().collection('posts').doc(postId).collection('comments').doc(res.id)
-          .set({
-            comment: comment,
-            id: res.id,
-            uid: uid,
-            author: author,
-            date: date,
-            likePostCount: 0
 
-          }).then(() => {
             dispatch('getPostComments', postId)
             console.log(comment, res.id)
-          })
+       
       })
   },
 
@@ -162,18 +157,18 @@ export const actions = {
 
 
 
-  updateTodo({
-    dispatch
-  }, id) {
-    firebase.firestore().collection('posts').doc(id)
-      .update({
-        post: post,
-      })
-      .then(() => {
-        dispatch('getPosts', post)
-        console.log(post, res.id)
-      })
-  },
+  // updateTodo({
+  //   dispatch
+  // }, id) {
+  //   firebase.firestore().collection('posts').doc(id)
+  //     .update({
+  //       post: post,
+  //     })
+  //     .then(() => {
+  //       dispatch('getPosts', post)
+  //       console.log(post, res.id)
+  //     })
+  // },
 
 
 
@@ -212,17 +207,24 @@ export const actions = {
     let imgName = ''
     let imgUrl = ''
     let date = firebase.firestore.Timestamp.now();
-    firebase.firestore().collection('posts').add({})
+    firebase.firestore().collection('posts').add({
+      location: location,
+      comment: comment,
+      author: author,
+      uid: uid,
+      date: date,
+      likePostCount: 0,
+    })
       .then((res) => {
-        firebase.firestore().collection('posts').doc(res.id)
-          .set({
-            location: location,
-            comment: comment,
-            author: author,
-            uid: uid,
-            id: res.id,
-            date: date,
-          }).then(() => {
+        // firebase.firestore().collection('posts').doc(res.id)
+        //   .set({
+        //     location: location,
+        //     comment: comment,
+        //     author: author,
+        //     uid: uid,
+        //     id: res.id,
+        //     date: date,
+        //   }).then(() => {
             dispatch('getPosts')
             console.log(comment, res.id)
             imgName = res.id
@@ -238,6 +240,7 @@ export const actions = {
                     firebase.firestore().collection('posts').doc(imgName)
                       .update({
                         imgUrl: imgUrl,
+                        id: imgName,
                       }).then(() => {
                         dispatch('getPosts')
                         console.log(comment, location, imgUrl)
@@ -246,7 +249,7 @@ export const actions = {
                   .catch(error => console.log(error))
 
               })
-          })
+          // })
 
 
       })

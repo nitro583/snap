@@ -19,6 +19,7 @@ $bgc: #888;
 html {
   font-family: 'Noto Sans JP', sans-serif;
   font-size: 16px;
+  
 }
 
 body.lock {
@@ -59,7 +60,8 @@ h3 {
 p {
   font-size: 1rem;
   color: #333;
-
+  overflow-wrap: break-word;
+  　　　word-wrap: break-word;
   @include mq() {
     font-size: 0.9rem;
   }

@@ -1,8 +1,118 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write
+
+
+ // 切り出した関数の記述
+
+ //ログインしていること
+        function isAuthenticated() { 
+            return request.auth != null;
+        }
+//ログインしているかつ、ユーザーIDが一致        
+        function isUserAuthenticated() { 
+            return isAuthenticated() 
+            && resource.data.uid == request.auth.uid;
+        }
+
+  function existingData() {
+    return resource.data;
+  }
+
+  function incomingData() {
+    return request.resource.data;
+  }
+
+
+// function isValidPosts(post) {               
+//                 return 'author' in post && post.author is string
+//                 && 'imgUrl' in post && post.imgUrl is string
+//                 && 'comment' in post && post.comment is string
+//                 && 'id' in post && post.id is string
+//                 && 'likePostCount' in post && post.likePostCount is number
+//                 && 'location' in post && post.location is string
+//                 && 'uid' in post && post.uid is string
+//                 && 'date' in post && post.date is timestamp;
+// }
+// function isValidLikedUsers(user) {               
+//                 return 'id' in user && user.id is string
+//                 && 'createTime' in user && user.createTime is timestamp;
+// }
+
+// function isValidUsers(user) {               
+//               return 'name' in user && user.name is string
+//                 && 'photoURL' in user && user.photoURL is string
+//                 && 'uid' in user && user.uid is string
+//                 && 'introduction' in user && user.introduction is string;
+// }
+
+    match /posts/{postId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if  isAuthenticated()
+      &&request.resource.data.keys().hasAll(['author', 'location', 'comment','date','uid','likePostCount']) 
+       &&request.resource.data.comment.size() < 201
+       && request.resource.data.location.size() < 31;
+      allow update: if 
+      isAuthenticated()
+       && incomingData().uid == existingData().uid //追加
+       && incomingData().location == existingData().location //追加
+       && incomingData().comment == existingData().comment //追加
+       && incomingData().author == existingData().author //追加
+       && incomingData().date == existingData().date //追加
+       && request.resource.data.comment.size() <= 200
+       && request.resource.data.location.size() <= 30;
+        allow delete: if isUserAuthenticated();
+
+
+    match /comments/{commentId} {
+      allow get: if true;
+      allow list:if true;
+      allow create: if isAuthenticated()
+      &&request.resource.data.keys().hasAll(['author', 'comment','date','uid']) 
+      && request.resource.data.comment.size() <= 200;
+
+
+
     }
+    match /likedUsers/{userId} {
+      allow get: if isAuthenticated();
+      allow list: if isAuthenticated();
+      allow create: if 
+      isAuthenticated()
+       &&request.resource.data.keys().hasAll(['uid','createTime']) 
+       allow update: if true
+      allow delete: if isUserAuthenticated()
+       
+    }
+    }
+
+
+    match /users/{userId} {
+      allow get: if isAuthenticated();
+      allow list: if isAuthenticated();
+
+       allow create: if isAuthenticated()
+       &&request.resource.data.keys().hasAll(['uid','name']) 
+       && request.resource.data.name.size() <= 15
+       allow update: if isUserAuthenticated()
+       && incomingData().uid == request.auth.uid
+       && incomingData().uid == existingData().uid //追加
+       && request.resource.data.name.size() <= 15
+       && request.resource.data.introduction.size() <= 140
+
+
+    match /likedPosts/{postId} {
+      allow get: if isAuthenticated();
+      allow list: if isAuthenticated();
+      allow create: if 
+      isAuthenticated()
+       &&request.resource.data.keys().hasAll(['uid','postId','createTime']) 
+       allow update: if true
+      allow delete: if isUserAuthenticated()
+       
+    }
+    }
+
   }
 }

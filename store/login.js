@@ -189,7 +189,8 @@ export const actions = {
               .doc(result.user.uid), {
                 uid: result.user.uid,
                 name: result.user.displayName,
-                photoURL: result.user.photoURL
+                photoURL: result.user.photoURL,
+
               }, { merge: true }
             )
             batch.commit()
@@ -256,18 +257,18 @@ console.log('ユーザーアイコン' + user.photoURL)
               .doc(postRef)
               .collection('likedUsers')
               .doc(anotherUserRef), {
-                id: anotherUserRef,
+                uid: anotherUserRef,
                 createTime: date,
               }
             )
-
             batch.set(
               firebase.firestore()
               .collection('users')
               .doc(anotherUserRef)
               .collection('likedPosts')
               .doc(postRef), {
-                id: postRef,
+                uid:anotherUserRef,
+                postId: postRef,
                 createTime: date
               }
             )
