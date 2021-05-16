@@ -3,7 +3,7 @@
     <header class="l-header">
       <div class="l-header__inner">
         <div class="l-header__inner__left">
-          <h1><NuxtLink to="/">SNAP×SNAP</NuxtLink></h1>
+          <h1><NuxtLink to="/">Snap×Snap</NuxtLink></h1>
         </div>
         <div class="l-header__inner__right" :class="{ isOpen: isOpen }">
           <ul class="l-header__nav " @click="isOpen = false">
