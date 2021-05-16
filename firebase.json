@@ -3,6 +3,11 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
+  "functions": { 
+    "functions": {
+      "source": "functions"
+    }
+  },
   "hosting": {
     "public": "dist",
     "ignore": [
@@ -10,10 +15,10 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [
+    "rewrites": [ 
       {
         "source": "**",
-        "destination": "/index.html"
+        "function": "ssr"
       }
     ]
   },

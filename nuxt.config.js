@@ -1,8 +1,8 @@
 import {
   faComment
 } from "@fortawesome/free-solid-svg-icons";
-
-export default {
+module.exports = {
+// export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'snap',
@@ -49,6 +49,7 @@ export default {
     }
 
   ],
+ 
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -98,7 +99,5 @@ export default {
     transpile: [
       "vee-validate/dist/rules"
     ],
-
-
   }
 }
