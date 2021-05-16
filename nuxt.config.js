@@ -41,11 +41,11 @@ export default {
     },
     {
       src: '~/plugins/moment-filter',
-      ssr: false
+     
     },
     {
       src: '~/plugins/infiniteloading',
-      ssr: false
+      
     }
 
   ],
