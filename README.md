@@ -1,3 +1,4 @@
+![Snapsnap](https://user-images.githubusercontent.com/56881735/118735533-9974f800-b87b-11eb-958e-195aea3a510a.png)
 # SNAP×SNAP
 SNAP×SNAPはスナップ写真に文字を添えて投稿できるSNSです。
 
