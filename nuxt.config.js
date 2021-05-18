@@ -5,7 +5,7 @@ module.exports = {
 // export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'snap',
+    title: 'SNAP×SNAP',
     htmlAttrs: {
       lang: 'ja'
     },
@@ -25,7 +25,7 @@ module.exports = {
     link: [{
       rel: 'icon',
       type: 'image/x-icon',
-      href: '/favicon.ico'
+      href: '/favicon.png'
     }]
   },
 
