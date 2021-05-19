@@ -1,5 +1,5 @@
 ![Snapsnap](https://user-images.githubusercontent.com/56881735/118735533-9974f800-b87b-11eb-958e-195aea3a510a.png)
-# SNAP×SNAP
+# 📷 SNAP×SNAP
 SNAP×SNAPはスナップ写真に文字を添えて投稿できるSNSです。
 
 何気ない日常を切り取ったスナップ写真にコメントを添えることで、何気なく過ぎていく日常を「思い出」に変え、より良い日常に変えることがSNAP×SNAPの狙いです。
