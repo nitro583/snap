@@ -133,6 +133,7 @@
         </div>
       </div>
     </transition>
+    <no-ssr>
     <infinite-loading
       ref="infiniteLoading"
       spinner="spiral"
@@ -140,6 +141,7 @@
     >
       <span slot="no-more">全てのPostの読み込みが完了しました。</span>
     </infinite-loading>
+    </no-ssr>
   </div>
 </template>
 

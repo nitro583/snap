@@ -89,8 +89,8 @@ service cloud.firestore {
 
 
     match /users/{userId} {
-      allow get: if isAuthenticated();
-      allow list: if isAuthenticated();
+      allow get: if true;
+      allow list: if true;
 
        allow create: if isAuthenticated()
        &&request.resource.data.keys().hasAll(['uid','name']) 

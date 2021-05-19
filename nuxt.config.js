@@ -2,7 +2,7 @@ import {
   faComment
 } from "@fortawesome/free-solid-svg-icons";
 module.exports = {
-// export default {
+  // export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'SNAP×SNAP',
@@ -36,20 +36,30 @@ module.exports = {
   }],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['@/plugins/firebase.js', {
-      src: '@/plugins/vee-validate'
+  plugins: [
+    {
+      src: '@/plugins/firebase.js',
+      mode:'server'
+
+    },
+    {
+      src: '@/plugins/vee-validate',
+      mode:'client'
+      
+      
     },
     {
       src: '~/plugins/moment-filter',
-     
+      mode:'client'
+      
     },
     {
       src: '~/plugins/infiniteloading',
-      
+      mode:'client'
     }
 
   ],
- 
+
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -71,7 +81,7 @@ module.exports = {
   ],
   webfontloader: {
     google: {
-      families: ['Noto+Sans+JP:wght@100;300;400;500;700;900','Noto+Serif+JP:wght@200;300;400;500;600;700;900','Girassol'],
+      families: ['Noto+Sans+JP:wght@100;300;400;500;700;900', 'Noto+Serif+JP:wght@200;300;400;500;600;700;900', 'Girassol'],
     },
   },
 
