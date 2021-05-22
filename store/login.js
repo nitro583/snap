@@ -197,7 +197,7 @@ export const actions = {
     firebase.auth()
       .signInWithPopup(provider)
       .then(function (result) {
-        firebase.firestore().collection('users').doc(result.user.uid).get
+        firebase.firestore().collection('users').doc(result.user.uid).get()
           .then((ref) => {
             if (!ref.exists) {
               batch.set(
