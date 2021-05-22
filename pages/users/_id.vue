@@ -1,8 +1,8 @@
 <template>
   <div class="">
-    <div class="p-id__profile">
+    <div v-if='postUser[0]' class="p-id__profile">
       <div class="p-id__profile__title">
-        <h2 class="p-id__profile__name">{{ userName }}</h2>
+        <h2 class="p-id__profile__name">{{ postUser[0].name}}</h2>
         <button
           v-if="postUser[0].uid === user.uid"
           class="c-button"
@@ -16,14 +16,14 @@
           <img
             v-if="postUser[0].photoURL"
             :src="postUser[0].photoURL"
-            :alt="userName"
+            :alt="postUser[0].uid"
           />
-          <img v-else src="~/assets/icon.png" :alt="user.name" />
+          <img v-else src="~/assets/icon.png" :alt="postUser[0].uid" />
         </div>
       </div>
       <div class="p-id__profile__right">
         <div class="p-id__profile__introduction">
-          <p>{{ introduction }}</p>
+          <p>{{ postUser[0].introduction }}</p>
         </div>
       </div>
     </div>
@@ -55,6 +55,8 @@
                   name="User Name"
                 >
                   <input
+                    
+
                     id="name"
                     class="c-input p-id__profile__edit__input"
                     type="text"
@@ -78,11 +80,13 @@
                   name="Introduction"
                 >
                   <textarea
+                   
                     rows="5"
                     id="introduction"
                     class="c-input p-id__profile__edit__text-area"
                     type="text"
                     v-model="introduction"
+         
                   ></textarea>
                   <p v-show="errors.length" class="p-id__profile__edit__error">
                     {{ errors[0] }}
@@ -125,6 +129,7 @@ export default {
   computed: {
     postUser() {
       return this.$store.getters["login/postUser"];
+
     },
     user() {
       return this.$store.getters["login/user"];
@@ -147,7 +152,15 @@ export default {
         this.$store.commit("login/updateIntroduction", value);
       }
     }
+    
   },
+  created(){
+    // this.$store.dispatch("login/getUser", this.$route.params.id),
+    this.$store.dispatch("login/checkLogin");
+
+    // this.introduction = this.postUser[0].introduction
+  },
+  
 
   components: {
     ImageInput
@@ -158,6 +171,7 @@ export default {
       password: "",
       updateName: "",
       thumbnail: "",
+
       uid: this.$route.params.id,
       show: true,
       imgShow: false,
@@ -171,9 +185,6 @@ export default {
     updateProfile() {
       console.log("updateProfile");
       this.errors = [];
-      if (!this.user.name) {
-        this.errors.push("Nameが未記入です。");
-      }
       if (!this.user.name) {
         this.errors.push("Nameが未記入です。");
       }

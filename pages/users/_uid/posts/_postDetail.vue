@@ -1,6 +1,8 @@
 <template>
     <div class="p-post-detail__content">
-    
+
+    <div v-if='post[0]' >
+
         <h2>Post Detail</h2>
         <div class="p-post-detail__post">
     
@@ -45,42 +47,59 @@
             </p>
         </div>
     </div>
+    </div><!--v-else-->
     </div>
 </template>
 
 <script>
-export default {
-    async fetch({ store, params }) {
-        console.log(params);
+import { mapGetters } from "vuex";
 
-        await store.dispatch("getPostComments", params.postDetail);
-        console.log("getPostCommentsしました");
-        await store.dispatch("getPost", params.postDetail);
-        console.log("getPostしました");
-    },
+export default {
+    // async asyncData({ store, params }) {
+        
+    //     Promise.all([
+            
+    //         await store.dispatch("getPostComments", params.postDetail),
+    //         console.log("getPostCommentsしました"),
+    //         await store.dispatch("getPost", params.postDetail),
+    //         console.log("getPostしました")
+    //     ])
+        
+    // },
 
     data() {
         return {
             postDetail: this.$route.params.postDetail,
             uid: this.$route.params.uid,
+            
             comment: "",
             show: true,
+            loading:true
         };
     },
+      created() {
+    this.$store.dispatch("getPostComments", this.$route.params.postDetail),
+    this.$store.dispatch("getPost", this.$route.params.postDetail),
+    this.$store.dispatch("login/checkLogin");
+
+    console.log("created");
+  },
     computed: {
-        post() {
-            return this.$store.getters["post"];
-        },
-        postComments() {
-            return this.$store.getters["postComments"];
-        },
+        ...mapGetters(["post","postComments","login/user"]),
+        // ...mapGetters(["login/user"]),
+
+
+        // postComments() {
+        //     return this.$store.getters["postComments"];
+        // },
         user() {
             return this.$store.getters["login/user"];
         },
     },
     methods: {
+
         // deleteTodo(index) {
-        //   console.log(index);
+            //   console.log(index);
         //   this.$store.dispatch("deleteTodo", this.todos[index].id);
         // },
         submitComment() {
