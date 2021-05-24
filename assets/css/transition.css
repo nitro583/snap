@@ -1,0 +1,13 @@
+.modal-enter-active,
+.modal-leave-active {
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  opacity: 1;
+}
+
+.modal-enter,
+.modal-leave-to {
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
+  opacity: 0;
+}

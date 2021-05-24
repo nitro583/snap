@@ -9,4 +9,3 @@ exports.ssr = functions.https.onRequest(async (req, res) => {
     await nuxt.ready()
     return nuxt.render(req, res)
 })
-

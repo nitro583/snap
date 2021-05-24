@@ -1,5 +1,12 @@
-
 module.exports = {
+
+  modules: [
+    '@nuxtjs/pwa'
+  ],
+  manifest: {
+    name: 'SNAP×SNAP',
+    lang: 'ja'
+  },
   // export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -34,26 +41,25 @@ module.exports = {
   }],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-    {
+  plugins: [{
       src: '@/plugins/firebase.js',
-      mode:'server'
+      mode: 'server'
 
     },
     {
       src: '@/plugins/vee-validate',
-      mode:'client'
-      
-      
+      mode: 'client'
+
+
     },
     {
       src: '~/plugins/moment-filter',
-      mode:'client'
-      
+      mode: 'client'
+
     },
     {
       src: '~/plugins/infiniteloading',
-      mode:'client'
+      mode: 'client'
     }
 
   ],

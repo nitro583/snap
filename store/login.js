@@ -215,13 +215,13 @@ export const actions = {
               batch.commit()
                 .then(() => {
                   dispatch('getUser', result.user.uid)
-                  console.log('profile updated.')
+                  console.log('profile registered.')
                   dispatch('checkLogin')
                   dispatch('goTop')
                 })
             } else {
               dispatch('getUser', result.user.uid)
-              console.log('profile updated.')
+              console.log('profile checked.')
               dispatch('checkLogin')
               dispatch('goTop')
             }

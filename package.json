@@ -4,16 +4,20 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
-    "build": "nuxt build && npm run build:copy:ssr",
-    "build:copy:ssr": "rimraf functions/ssr && mkdirp functions/ssr && cp -R .nuxt/dist functions/ssr/dist",
-    "start": "nuxt start",
-    "generate": "nuxt generate"
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "start": "HOST=0.0.0.0 PORT=8080 nuxt start"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-brands-svg-icons": "^5.15.3",
+    "@fortawesome/free-regular-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/vue-fontawesome": "^0.1.10",
+    "@nuxt/ufo": "^0.5.4",
     "@nuxtjs/axios": "^5.12.5",
+    "@nuxtjs/fontawesome": "^1.1.2",
+    "@nuxtjs/pwa": "^3.3.5",
     "core-js": "^3.8.3",
     "firebase": "^8.6.1",
     "firebase-admin": "^9.6.0",
@@ -28,11 +32,9 @@
     "vue-star": "^0.0.4"
   },
   "devDependencies": {
-    "@fortawesome/free-brands-svg-icons": "^5.15.3",
-    "@fortawesome/free-regular-svg-icons": "^5.15.3",
-    "@nuxtjs/fontawesome": "^1.1.2",
     "@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/vuetify": "^1.11.3",
+    "lodash": "^4.17.21",
     "node-sass": "^5.0.0",
     "sass-loader": "^10.1.1"
   }
