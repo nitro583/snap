@@ -10,11 +10,20 @@ SNAP×SNAPはスナップ写真に文字を添えて投稿できるSNSです。
 
 ## 開発環境
 
+
 - Nuxt.js 2.14.12 (SSR)
-- Firebase 8.6.1 (Hosting/Functions/Authentification/firestore/storage)
+- Google App Engine(Node.js) 
+- Firebase 8.6.1 (Authentification/firestore/storage)
 - Github
 - VSCode(Visual Studio Code)
 
+## 構成図
+![infrastructure](https://user-images.githubusercontent.com/56881735/119517272-70d88b00-bdb2-11eb-88c4-03ec4f55f4a9.png)
+
+- App Engine × Nuxt.js でSSR環境を実現しました。
+- Authentification でユーザー認証を実装しました。
+- DB機能としてFirestoreを採用しました。
+- ストレージ機能としてFirestorageを採用しました。
 ## 機能
 
 ### Signup
