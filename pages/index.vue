@@ -70,7 +70,7 @@
             <button
               v-bind:disabled="isPush"
               v-on:click="likePost(post.id)"
-              v-if="user.login && likedPosts.every(val => val.id !== post.id)"
+              v-if="user.login && likedPosts.every(val => val.postId !== post.id)"
             >
               <fa :icon="['fas', 'heart']" /> {{ post.likePostCount }}
             </button>
@@ -78,7 +78,7 @@
               class="is-like"
               v-bind:disabled="isPush"
               v-on:click="notLikePost(post.id)"
-              v-if="user.login && likedPosts.some(val => val.id === post.id)"
+              v-if="user.login && likedPosts.some(val => val.postId === post.id)"
             >
               <fa :icon="['fas', 'heart']" /> {{ post.likePostCount }}
             </button>
