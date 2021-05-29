@@ -5,18 +5,32 @@ SNAP×SNAPはスナップ写真に文字を添えて投稿できるSNSです。
 何気ない日常を切り取ったスナップ写真にコメントを添えることで、何気なく過ぎていく日常を「思い出」に変え、より良い日常に変えることがSNAP×SNAPの狙いです。
 
 ## 🌐  App URL
-
-### **https://snapsnap.app/**
+ ### **https://snapsnap.app/**
+ ### テストログイン用アカウント
+ - E-mail：test@test.com
+ - PassWord：testtest
+ 
 
 ## 💻 開発環境
-
-
 - Nuxt.js 2.14.12 (SSR)
 - Google App Engine(Node.js) 
 - Firebase 8.6.1 (Authentification/firestore/storage)
 - Google Domains（独自ドメイン取得）
 - Github
 - VSCode(Visual Studio Code)
+
+## 💻 開発の目的と背景
+### 目的
+- Inputした学習内容をOutput（実践）するため
+- 実装したい機能を調べながら実現させることで理解度を高めるため
+- 学習の成果を公表するためのポートフォリオを作成するため
+
+### 背景 （写真投稿SNSを開発した理由）
+- Twitter・Instagram・Facebook・Tumblr・note・Qiitaなど、メジャーなWEBアプリに備わっている共通の機能を実装するため 
+- Instagramよりも気軽に写真を投稿できるアプリを開発したかったため
+- 誰もが日常的に写真を撮影しやすい環境にあり、ターゲットにできるユーザーが多いため
+- 見返されることなくディスク容量を埋めているだけの写真を見返すきっかけの場を築きたかったため
+
 
 ## :rocket: 構成図
 ![infrastructure](https://user-images.githubusercontent.com/56881735/119627470-3240e000-be47-11eb-87b8-d33c72f2a291.png)
@@ -86,7 +100,15 @@ SNAP×SNAPはスナップ写真に文字を添えて投稿できるSNSです。
 - 画像選択はドラッグ&ドロップでの選択にも対応しています。
 
 
-
+### 今後の実装したい機能
+- LikeしたPostをマイページから一覧表示させる
+- PostにLikeしたユーザーを一覧表示させる
+- フォロー・フォロワー機能を実装する
+- フォローしたユーザーの投稿のみを表示させる
+- フォロー・フォロワーを一覧表示させる
+- 検索機能を実装する
+- 撮影場所をGoogleMap上で指定し、投稿に反映させる
+- 画像圧縮してから画像をアップロードさせる
 
 ## 🖥 Build Setup
 
@@ -112,5 +134,6 @@ For detailed explanation on how things work, check out [Nuxt.js docs](https://nu
 
 
 ## :pencil: Author
+Seiya Matsumoto
 - [Github](https://github.com/nitro583)
 - [Twitter](https://twitter.com/seiya_mtmt)
