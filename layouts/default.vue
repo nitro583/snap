@@ -67,6 +67,9 @@
     <div class="l-wrapper" @click="isOpen = false">
       <Nuxt class="fadein" />
     </div>
+    <footer class="l-footer">
+      © 2021 SNAP×SNAP
+    </footer>
   </div>
 </template>
 <script>
