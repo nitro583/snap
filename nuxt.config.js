@@ -1,12 +1,5 @@
 module.exports = {
 
-  modules: [
-    '@nuxtjs/pwa'
-  ],
-  manifest: {
-    name: 'SNAP×SNAP',
-    lang: 'ja'
-  },
   // export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -81,8 +74,14 @@ module.exports = {
     '@nuxtjs/axios',
     'nuxt-fontawesome',
     'nuxt-webfontloader',
+    '@nuxtjs/pwa',
 
   ],
+
+  manifest: {
+    name: 'SNAP×SNAP',
+    lang: 'ja'
+  },
   webfontloader: {
     google: {
       families: ['Noto+Sans+JP:wght@100;300;400;500;700;900', 'Noto+Serif+JP:wght@200;300;400;500;600;700;900', 'Girassol'],
