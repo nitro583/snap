@@ -53,7 +53,7 @@
             </li>
           </ul>
         </div>
-        <button
+        <div
           class="c-burger__btn"
           @click="isOpen = !isOpen"
           :class="{ isOpen: isOpen }"
@@ -61,7 +61,7 @@
           <span class="p-bars">
             <span class="p-bar p-bar__top"></span>
           </span>
-        </button>
+        </div>
       </div>
     </header>
     <div class="l-wrapper" @click="isOpen = false">

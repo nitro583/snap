@@ -77,6 +77,9 @@ export default {
             loading:true
         };
     },
+
+
+
       created() {
     this.$store.dispatch("getPostComments", this.$route.params.postDetail),
     this.$store.dispatch("getPost", this.$route.params.postDetail),

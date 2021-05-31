@@ -1,5 +1,29 @@
-module.exports = {
+const webpack = require('webpack')
 
+// path
+const baseUrl = process.env.BASE_URL || 'http://localhost:3000'
+const baseDir = process.env.BASE_DIR || '/'
+const basePath = baseUrl + baseDir
+
+// meta
+const lang = 'ja'
+const siteName = 'SNAP×SNAP'
+const siteDesc = 'SNAP×SNAP」はスナップ写真に文字を添えて投稿できるSNSです。'
+const siteKeywords = 'スナップ写真,SNAP,SNS,SNAP SNAP'
+
+// images
+const iconImages = baseDir + 'img/icons/'
+const ogpImages = basePath + 'img/ogp/'
+
+// pwa
+const shortName = 'SNAPSNAP'
+const manifestIcon = 'img/icons/icon-1024.png'
+const splashscreens = baseDir + 'img/splashscreens/'
+
+module.exports = {
+  router: {
+    base: baseDir,
+  },
   // export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -11,20 +35,125 @@ module.exports = {
         charset: 'utf-8'
       },
       {
+        'http-equiv': 'x-ua-compatible',
+        content: 'ie=edge'
+      },
+      {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1'
       },
       {
+        name: 'format-detection',
+        content: 'telephone=no, email=no, address=no'
+      },
+
+      // SEO関連
+      {
         hid: 'description',
         name: 'description',
-        content: ''
-      }
+        content: siteDesc
+      },
+      {
+        hid: 'keywords',
+        name: 'keywords',
+        content: siteKeywords
+      },
+
+      // ogp関連
+      {
+        hid: 'og:site_name',
+        property: 'og:site_name',
+        content: siteName
+      },
+      {
+        hid: 'og:type',
+        property: 'og:type',
+        content: 'website'
+      },
+      {
+        hid: 'og:url',
+        property: 'og:url',
+        content: basePath
+      },
+      {
+        hid: 'og:title',
+        property: 'og:title',
+        content: siteName
+      },
+      {
+        hid: 'og:description',
+        property: 'og:description',
+        content: siteDesc
+      },
+      {
+        hid: 'og:image',
+        property: 'og:image',
+        content: `${ogpImages}home.jpg`
+      },
+      {
+        name: 'twitter:card',
+        content: 'summary_large_image'
+      },
     ],
     link: [{
-      rel: 'icon',
-      type: 'image/x-icon',
-      href: '/favicon.png'
-    }]
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: '/favicon.png'
+      },
+      // pwa splash screens
+      // Doc: https://appsco.pe/developer/splash-screens
+      {
+        href: splashscreens + 'iphone5_splash.png',
+        media: '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)',
+        rel: 'apple-touch-startup-image'
+      },
+      {
+        href: splashscreens + 'iphone6_splash.png',
+        media: '(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)',
+        rel: 'apple-touch-startup-image'
+      },
+      {
+        href: splashscreens + 'iphoneplus_splash.png',
+        media: '(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)',
+        rel: 'apple-touch-startup-image'
+      },
+      {
+        href: splashscreens + 'iphonex_splash.png',
+        media: '(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)',
+        rel: 'apple-touch-startup-image'
+      },
+      {
+        href: splashscreens + 'iphonexr_splash.png',
+        media: '(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)',
+        rel: 'apple-touch-startup-image'
+      },
+      {
+        href: splashscreens + 'iphonexsmax_splash.png',
+        media: '(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)',
+        rel: 'apple-touch-startup-image'
+      },
+      {
+        href: splashscreens + 'ipad_splash.png',
+        media: '(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)',
+        rel: 'apple-touch-startup-image'
+      },
+      {
+        href: splashscreens + 'ipadpro1_splash.png',
+        media: '(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)',
+        rel: 'apple-touch-startup-image'
+      },
+      {
+        href: splashscreens + 'ipadpro3_splash.png',
+        media: '(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)',
+        rel: 'apple-touch-startup-image'
+      },
+      {
+        href: splashscreens + 'ipadpro2_splash.png',
+        media: '(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)',
+        rel: 'apple-touch-startup-image'
+      },
+
+    ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -80,7 +209,13 @@ module.exports = {
 
   manifest: {
     name: 'SNAP×SNAP',
-    lang: 'ja'
+    lang: 'ja',
+    short_name: 'SNAP×SNAP',
+    description: '「SNAP×SNAP」はスナップ写真に文字を添えて投稿できるSNSです。',
+    background_color: '#ffffff',
+    theme_color: '#ffffff',
+    display: 'standalone',
+    orientation: 'portrait'
   },
   webfontloader: {
     google: {
