@@ -21,6 +21,9 @@ const manifestIcon = 'img/icons/icon-1024.png'
 const splashscreens = baseDir + 'img/splashscreens/'
 
 module.exports = {
+  icon: {
+    iconFileName: manifestIcon
+  },
   router: {
     base: baseDir,
   },
@@ -31,7 +34,11 @@ module.exports = {
     htmlAttrs: {
       lang: 'ja'
     },
-    meta: [{
+    meta: [
+      //pwa ios
+      { name: 'apple-mobile-web-app-capable', content: 'yes' },
+      { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
+      {
         charset: 'utf-8'
       },
       {
@@ -99,7 +106,9 @@ module.exports = {
         rel: 'icon',
         type: 'image/x-icon',
         href: '/favicon.png'
+        
       },
+      { rel: 'apple-touch-icon', sizes: '180x180', href: iconImages + 'apple-touch-icon.png' },
       // pwa splash screens
       // Doc: https://appsco.pe/developer/splash-screens
       {
