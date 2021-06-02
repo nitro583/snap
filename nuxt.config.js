@@ -2,7 +2,7 @@ const webpack = require('webpack')
 require('dotenv').config()
 
 // path
-const baseUrl = process.env.BASE_URL || 'http://localhost:3000'
+const baseUrl = process.env.BASE_URL || 'https://snapsnap.app'
 const baseDir = process.env.BASE_DIR || '/'
 const basePath = baseUrl + baseDir
 
@@ -33,8 +33,10 @@ module.exports = {
   head: {
     title: 'SNAP×SNAP',
     htmlAttrs: {
-      lang: 'ja'
+            prefix: 'og: http://ogp.me/ns#',
+      lang: lang
     },
+    titleTemplate: `%s - ${siteName}`,
     meta: [
       //pwa ios
       { name: 'apple-mobile-web-app-capable', content: 'yes' },
@@ -96,7 +98,7 @@ module.exports = {
       {
         hid: 'og:image',
         property: 'og:image',
-        content: `${ogpImages}home.jpg`
+        content: `${ogpImages}ogp.png`
       },
       {
         name: 'twitter:card',
@@ -204,7 +206,8 @@ module.exports = {
   buildModules: ['@nuxtjs/vuetify', '@nuxtjs/moment',
   '@nuxtjs/gtm',
 
-  // '@nuxtjs/google-analytics' ],
+  // '@nuxtjs/google-analytics' 
+],
   // publicRuntimeConfig: {
   //   googleAnalytics: {
   //     id: process.env.GOOGLE_ANALYTICS_ID
