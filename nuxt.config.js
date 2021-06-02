@@ -200,7 +200,13 @@ module.exports = {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: ['@nuxtjs/vuetify', '@nuxtjs/moment'],
+  buildModules: ['@nuxtjs/vuetify', '@nuxtjs/moment',  '@nuxtjs/google-analytics'],
+  publicRuntimeConfig: {
+    googleAnalytics: {
+      id: process.env.GOOGLE_ANALYTICS_ID
+    }
+  },
+
   moment: {
     // ここにオプションが記述できる
     locales: ['ja']
