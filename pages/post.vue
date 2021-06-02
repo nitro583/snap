@@ -134,13 +134,13 @@
       </div>
     </transition>
     <no-ssr>
-    <infinite-loading
-      ref="infiniteLoading"
-      spinner="spiral"
-      @infinite="infiniteHandler"
-    >
-      <span slot="no-more">全てのPostの読み込みが完了しました。</span>
-    </infinite-loading>
+      <infinite-loading
+        ref="infiniteLoading"
+        spinner="spiral"
+        @infinite="infiniteHandler"
+      >
+        <span slot="no-more">全てのPostの読み込みが完了しました。</span>
+      </infinite-loading>
     </no-ssr>
   </div>
 </template>
@@ -185,6 +185,8 @@ export default {
   created() {
     this.$store.dispatch("getPosts");
     console.log("created");
+    const userId = 10;
+    this.$gtm.push({ user_id: userId });
   },
   mounted() {
     // this.$store.dispatch("getPosts");

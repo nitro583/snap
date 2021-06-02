@@ -200,7 +200,7 @@ module.exports = {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: ['@nuxtjs/vuetify', '@nuxtjs/moment',  '@nuxtjs/google-analytics'],
+  buildModules: ['@nuxtjs/vuetify', '@nuxtjs/moment', ],
   publicRuntimeConfig: {
     googleAnalytics: {
       id: process.env.GOOGLE_ANALYTICS_ID
@@ -219,9 +219,13 @@ module.exports = {
     'nuxt-fontawesome',
     'nuxt-webfontloader',
     '@nuxtjs/pwa',
+    '@nuxtjs/gtm',
 
   ],
-
+  gtm: {
+    id: process.env.GOOGLE_ANALYTICS_ID
+     // タグマネージャーのid
+  },
   manifest: {
     name: 'SNAP×SNAP',
     lang: 'ja',
