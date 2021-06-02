@@ -1,4 +1,5 @@
 const webpack = require('webpack')
+require('dotenv').config()
 
 // path
 const baseUrl = process.env.BASE_URL || 'http://localhost:3000'
@@ -200,12 +201,15 @@ module.exports = {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: ['@nuxtjs/vuetify', '@nuxtjs/moment', ],
-  publicRuntimeConfig: {
-    googleAnalytics: {
-      id: process.env.GOOGLE_ANALYTICS_ID
-    }
-  },
+  buildModules: ['@nuxtjs/vuetify', '@nuxtjs/moment',
+  '@nuxtjs/gtm',
+
+  // '@nuxtjs/google-analytics' ],
+  // publicRuntimeConfig: {
+  //   googleAnalytics: {
+  //     id: process.env.GOOGLE_ANALYTICS_ID
+  //   }
+  // },
 
   moment: {
     // ここにオプションが記述できる
@@ -219,11 +223,12 @@ module.exports = {
     'nuxt-fontawesome',
     'nuxt-webfontloader',
     '@nuxtjs/pwa',
-    '@nuxtjs/gtm',
 
   ],
+
   gtm: {
-    id: process.env.GOOGLE_ANALYTICS_ID
+    id: process.env.GTM_ID,
+    pageTracking: true,
      // タグマネージャーのid
   },
   manifest: {

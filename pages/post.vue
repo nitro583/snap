@@ -185,8 +185,7 @@ export default {
   created() {
     this.$store.dispatch("getPosts");
     console.log("created");
-    const userId = 10;
-    this.$gtm.push({ user_id: userId });
+    this.$gtm.push({ user_id: this.user.uid });
   },
   mounted() {
     // this.$store.dispatch("getPosts");
