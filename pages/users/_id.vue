@@ -1,8 +1,8 @@
 <template>
   <div class="">
-    <div v-if='postUser[0]' class="p-id__profile">
+    <div v-if="postUser[0]" class="p-id__profile">
       <div class="p-id__profile__title">
-        <h2 class="p-id__profile__name">{{ postUser[0].name}}</h2>
+        <h2 class="p-id__profile__name">{{ postUser[0].name }}</h2>
         <button
           v-if="postUser[0].uid === user.uid"
           class="c-button"
@@ -27,6 +27,76 @@
         </div>
       </div>
     </div>
+
+    <div>
+      <div
+        class="p-post__card"
+        v-for="(post, index) in usersLikedPosts"
+        v-bind:key="post.id"
+      >
+        <div class="p-post__card__image"><img :src="post.imgUrl" alt="" /></div>
+        <div class="p-post__card__text">
+          <div class="p-post__card__date">
+            <p>
+              <fa :icon="['far', 'clock']" /> {{ post.date.toDate() | moment }}
+            </p>
+          </div>
+          <div class="p-post__card__author">
+            <p>
+              <NuxtLink :to="{ name: 'users-id', params: { id: post.uid } }">
+                <fa :icon="['fas', 'user-circle']" />
+                {{ post.author }}</NuxtLink
+              >
+            </p>
+          </div>
+          <div class="p-post__card__note">
+            <p>{{ post.comment }}</p>
+          </div>
+          <div class="p-post__card__location">
+            <p><fa :icon="['fas', 'map-marker-alt']" /> {{ post.location }}</p>
+          </div>
+        </div>
+        <div v-if="user.login" class="p-post__card__button">
+          <div class="p-post__card__delete">
+            <button v-on:click="deletePost(index)" v-if="post.uid === user.uid">
+              <fa :icon="['fas', 'trash-alt']" />
+            </button>
+          </div>
+          <div class="p-post__card__comment">
+            <Nuxt-link
+              :to="{
+                name: 'users-uid-posts-postDetail',
+                params: { uid: post.uid, postDetail: post.id }
+              }"
+            >
+              <fa :icon="['far', 'comment']" />
+            </Nuxt-link>
+          </div>
+          <div class="p-post__card__like">
+            <button
+              v-bind:disabled="isPush"
+              v-on:click="likePost(post.id)"
+              v-if="
+                user.login && likedPosts.every(val => val.postId !== post.id)
+              "
+            >
+              <fa :icon="['fas', 'heart']" /> {{ post.likePostCount }}
+            </button>
+            <button
+              class="is-like"
+              v-bind:disabled="isPush"
+              v-on:click="notLikePost(post.id)"
+              v-if="
+                user.login && likedPosts.some(val => val.postId === post.id)
+              "
+            >
+              <fa :icon="['fas', 'heart']" /> {{ post.likePostCount }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <transition name="modal">
       <div
         v-show="showModal"
@@ -55,8 +125,6 @@
                   name="User Name"
                 >
                   <input
-                    
-
                     id="name"
                     class="c-input p-id__profile__edit__input"
                     type="text"
@@ -80,13 +148,11 @@
                   name="Introduction"
                 >
                   <textarea
-                   
                     rows="5"
                     id="introduction"
                     class="c-input p-id__profile__edit__text-area"
                     type="text"
                     v-model="introduction"
-         
                   ></textarea>
                   <p v-show="errors.length" class="p-id__profile__edit__error">
                     {{ errors[0] }}
@@ -113,6 +179,7 @@
 
 <script>
 import ImageInput from "@/components/imageInput.vue";
+import { mapGetters } from "vuex";
 export default {
   async fetch({ store, params }) {
     console.log("params.id" + params.id);
@@ -126,14 +193,28 @@ export default {
       }
     };
   },
+
   computed: {
+    ...mapGetters(["posts"]),
+    posts() {
+      return this.$store.getters["posts"];
+    },
+    recentPosts() {
+      return this.posts.slice(0, this.count);
+    },
     postUser() {
       return this.$store.getters["login/postUser"];
-
     },
     user() {
       return this.$store.getters["login/user"];
     },
+    likedPosts() {
+      return this.$store.getters["login/likedPosts"];
+    },
+    usersLikedPosts() {
+      return this.$store.getters["login/usersLikedPosts"];
+    },
+
     userName: {
       get() {
         const postUser = this.$store.getters["login/postUser"];
@@ -152,16 +233,21 @@ export default {
         this.$store.commit("login/updateIntroduction", value);
       }
     }
-    
   },
-  created(){
+  created() {
     // this.$store.dispatch("login/getUser", this.$route.params.id),
     this.$store.dispatch("login/checkLogin");
+    this.$store.dispatch('login/getUsersLikedPosts', {uid:this.$route.params.id,count:this.count})
+    console.log("created");
 
     // this.introduction = this.postUser[0].introduction
   },
-  
-
+watch:{
+                  likedPosts: function ( newVal, oldVal) {
+                      this.$store.dispatch('login/getUsersLikedPosts', {uid:this.$route.params.id,count:this.count})
+                      console.log('変更されました。')
+                }
+},
   components: {
     ImageInput
   },
@@ -171,14 +257,15 @@ export default {
       password: "",
       updateName: "",
       thumbnail: "",
-
+      count: 6,
       uid: this.$route.params.id,
       show: true,
       imgShow: false,
       showModal: false,
       scrollLock: "",
       error: "",
-      image: {}
+      image: {},
+      isPush: false
     };
   },
   methods: {
@@ -209,13 +296,11 @@ export default {
     closeModal() {
       this.showModal = false;
       this.scrollLock = "";
-
       this.$store.dispatch("login/getUser", this.user.uid);
     },
     // changeImg(e) {
     //   this.thumbnail = e.target.files[0];
     //   // this.thumbnail = this.image
-
     //   console.log(this.thumbnail);
     //   if (this.thumbnail.size / 1000000 > 5) {
     //     this.error =
@@ -269,6 +354,36 @@ export default {
           this.imgShow = false;
         });
       }
+    },
+
+    deletePost(index) {
+      console.log(index);
+      this.$store.dispatch("deletePost", this.posts[index].id);
+    },
+    endPush() {
+      this.isPush = false;
+    },
+    likePost(post) {
+      this.isPush = true;
+      console.log(post);
+      console.log(this.user.uid);
+      this.$store.dispatch("login/likePost", {
+        post: post,
+        uid: this.user.uid
+      });
+        setTimeout(this.endPush, 1000);
+
+    },
+    notLikePost(post) {
+      this.isPush = true;
+      console.log(post);
+      console.log(this.user.uid);
+      this.$store.dispatch("login/notLikePost", {
+        post: post,
+        uid: this.user.uid
+      });
+      setTimeout(this.endPush, 1000);
+
     }
   }
 };

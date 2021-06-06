@@ -1,6 +1,7 @@
 import {
   faCaretSquareLeft
 } from '@fortawesome/free-solid-svg-icons'
+import { dimensions } from 'vee-validate/dist/rules'
 import firebase from '~/plugins/firebase'
 
 
@@ -8,7 +9,7 @@ export const state = () => ({
   user: [],
   postUser: [],
   likedPosts: [],
-
+  usersLikedPosts:[],
 })
 
 export const getters = {
@@ -23,6 +24,9 @@ export const getters = {
   },
   likedPosts: state => {
     return state.likedPosts
+  },
+  usersLikedPosts: state => {
+    return state.usersLikedPosts
   },
 }
 
@@ -380,9 +384,56 @@ export const actions = {
   },
 
 
+  getUsersLikedPosts({
+    commit
+  },{uid,count}) {
+    console.log('getUsersLikedPosts取得' + uid)
+    firebase.firestore().collection('users').doc(uid).collection('likedPosts').orderBy("createTime", 'desc')
+      .get()
+      .then((res) => {
+        console.log(res)
+        const likedPostIds = []
+        res.forEach(x => {
+          likedPostIds.push(x.data().postId)
+          console.log(x.data().postId)
+        })
+
+        if (likedPostIds.length){
+          console.log('getLikedPostsIds ')
+          const start = count - 6;
+          const end = count
+          const recentLikedPostIds = likedPostIds.slice( start, end)
+          console.log(recentLikedPostIds)
+  
+          firebase.firestore().collection('posts').where(firebase.firestore.FieldPath.documentId(),'in',recentLikedPostIds).get().then((res) => {
+            const posts = []
+            res.forEach(x => {
+              posts.push(x.data())
+            })
+            console.log('getUsersLikedPosts')
+            commit('usersLikedPosts', posts)
+          })
+          
+        } else {
+          console.log('LikeしているPostがありません')
+          commit('usersLikedPosts', null)
+        }
+      })
+
+
+            // const likedPostIds = []
+        // likedPosts.forEach(x => {
+        //   console.log(x.postId)
+        //   likedPostIds.push(x.postId)
+        // })
+        // 
+        // dispatch('getUsersLikedPosts',recentLikedPostIds)
+
+  },
+
   getLikedPosts({
     commit
-  }, uid) {
+  },uid) {
     console.log('getLikedPosts取得' + uid)
     firebase.firestore().collection('users').doc(uid).collection('likedPosts').orderBy("createTime", 'desc')
       .get()
@@ -396,7 +447,6 @@ export const actions = {
         commit('getLikedPosts', likedPosts)
         console.log('getLikedPosts ')
       })
-
   },
 
 
@@ -451,5 +501,9 @@ export const mutations = {
   getLikedPosts(state, likedPosts) {
     console.log('likedPosts:' + likedPosts)
     state.likedPosts = likedPosts
+  },
+  usersLikedPosts(state, likedPosts) {
+    console.log('likedPosts:' + likedPosts)
+    state.usersLikedPosts = likedPosts
   },
 }
