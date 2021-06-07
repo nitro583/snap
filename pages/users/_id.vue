@@ -27,8 +27,32 @@
         </div>
       </div>
     </div>
+    <!-- <button class="c-button p-id__profile__edit__button" @click="count += 6">
+      次へ
+    </button> -->
+    <p>usersLikedPostsIds: {{usersLikedPostsIds.length}}</p>
+    <p>getPageCount : {{getPageCount }}</p>
+    <p>currentPage:{{ currentPage}}</p>
 
-    <div>
+          <h2>Like</h2>
+          <paginate  v-if="(getPageCount > 1)"
+        :page-count="getPageCount"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="clickCallback"
+        :prev-text="'前へ'"
+        :next-text="'次へ'"
+        :container-class="'pagination '"
+        :page-class="'pagination-item'"
+        :page-link-class="'pagination-item__link'"
+        :prev-class="'pagination-btn pagination-prev'"
+        :prev-link-class="'pagination-btn__link'"
+        :next-class="'pagination-btn pagination-next'"
+        :next-link-class="'pagination-btn__link'"
+        :hide-prev-next="true"
+        >
+      </paginate>
+<div class="p-post__content">
       <div
         class="p-post__card"
         v-for="(post, index) in usersLikedPosts"
@@ -95,8 +119,7 @@
           </div>
         </div>
       </div>
-    </div>
-
+</div>
     <transition name="modal">
       <div
         v-show="showModal"
@@ -186,6 +209,12 @@ export default {
     await store.dispatch("login/getUser", params.id);
     console.log("getUserしました");
   },
+  //   async fetch({ store, params }) {
+  //    await store.dispatch("login/getUsersLikedPosts", {
+  //     uid: params.id,
+  //     count: 1
+  //   });
+  // },
   head() {
     return {
       bodyAttrs: {
@@ -214,6 +243,12 @@ export default {
     usersLikedPosts() {
       return this.$store.getters["login/usersLikedPosts"];
     },
+        usersLikedPostsIds() {
+      return this.$store.getters["login/usersLikedPostsIds"];
+    },
+        getPageCount: function() {
+      return Math.ceil(this.usersLikedPostsIds.length / this.parPage);
+    },
 
     userName: {
       get() {
@@ -237,17 +272,30 @@ export default {
   created() {
     // this.$store.dispatch("login/getUser", this.$route.params.id),
     this.$store.dispatch("login/checkLogin");
-    this.$store.dispatch('login/getUsersLikedPosts', {uid:this.$route.params.id,count:this.count})
+    this.$store.dispatch("login/getUsersLikedPosts", {
+      uid: this.$route.params.id,
+      count: this.count
+    });
     console.log("created");
 
     // this.introduction = this.postUser[0].introduction
   },
-watch:{
-                  likedPosts: function ( newVal, oldVal) {
-                      this.$store.dispatch('login/getUsersLikedPosts', {uid:this.$route.params.id,count:this.count})
-                      console.log('変更されました。')
-                }
-},
+  watch: {
+    likedPosts: function(newVal, oldVal) {
+      this.$store.dispatch("login/getUsersLikedPosts", {
+        uid: this.$route.params.id,
+        count: this.currentPage
+      });
+      console.log("変更されました。");
+    },
+    currentPage: function(newVal, oldVal) {
+      this.$store.dispatch("login/getUsersLikedPosts", {
+        uid: this.$route.params.id,
+        count: this.currentPage
+      });
+      console.log("変更されました。");
+    }
+  },
   components: {
     ImageInput
   },
@@ -257,7 +305,6 @@ watch:{
       password: "",
       updateName: "",
       thumbnail: "",
-      count: 6,
       uid: this.$route.params.id,
       show: true,
       imgShow: false,
@@ -265,7 +312,10 @@ watch:{
       scrollLock: "",
       error: "",
       image: {},
-      isPush: false
+      isPush: false,
+      parPage:'6',
+      currentPage:'1',
+
     };
   },
   methods: {
@@ -371,8 +421,7 @@ watch:{
         post: post,
         uid: this.user.uid
       });
-        setTimeout(this.endPush, 1000);
-
+      setTimeout(this.endPush, 1000);
     },
     notLikePost(post) {
       this.isPush = true;
@@ -383,7 +432,13 @@ watch:{
         uid: this.user.uid
       });
       setTimeout(this.endPush, 1000);
+    },
+    // pageChangeHandler(selectedPage) {
+    //   this.currentPage = selectedPage;
+    // }
 
+        clickCallback: function (pageNum) {
+      this.currentPage = Number(pageNum);
     }
   }
 };

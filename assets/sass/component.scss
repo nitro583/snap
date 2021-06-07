@@ -44,3 +44,33 @@
   left: 20px;
   font-size: 12px;
 }
+.pagination{
+  display: flex;
+  justify-content: center;
+
+  &-item{
+    list-style: none;
+  }
+  &-btn{
+    list-style: none;
+  }
+}
+.pagination-btn__link,
+.pagination-item__link {
+  border: solid 1px #3A3F58;
+  border-radius: 4px;
+  text-align: center;
+  padding: .5rem 1rem;
+  margin: 0 .25rem;
+  display: block;
+}
+.pagination-btn__link:hover,
+.pagination-item__link:hover {
+  background-color: #3A3F58;
+  color: #fff;
+}
+.active .pagination-item__link {
+  background-color: #3A3F58;
+  color: #fff;
+  pointer-events: none;
+}

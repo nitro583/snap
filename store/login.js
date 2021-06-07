@@ -10,6 +10,8 @@ export const state = () => ({
   postUser: [],
   likedPosts: [],
   usersLikedPosts:[],
+  usersLikedPostsIds:[],
+
 })
 
 export const getters = {
@@ -27,6 +29,9 @@ export const getters = {
   },
   usersLikedPosts: state => {
     return state.usersLikedPosts
+  },
+  usersLikedPostsIds: state => {
+    return state.usersLikedPostsIds
   },
 }
 
@@ -400,9 +405,10 @@ export const actions = {
 
         if (likedPostIds.length){
           console.log('getLikedPostsIds ')
-          const start = count - 6;
-          const end = count
+          const end = count * 6
+          const start = end - 6;
           const recentLikedPostIds = likedPostIds.slice( start, end)
+          commit('usersLikedPostsIds', likedPostIds)
           console.log(recentLikedPostIds)
   
           firebase.firestore().collection('posts').where(firebase.firestore.FieldPath.documentId(),'in',recentLikedPostIds).get().then((res) => {
@@ -416,6 +422,7 @@ export const actions = {
           
         } else {
           console.log('LikeしているPostがありません')
+          commit('usersLikedPostsIds', null)
           commit('usersLikedPosts', null)
         }
       })
@@ -502,8 +509,10 @@ export const mutations = {
     console.log('likedPosts:' + likedPosts)
     state.likedPosts = likedPosts
   },
+  usersLikedPostsIds(state, likedPostsIds) {
+    state.usersLikedPostsIds = likedPostsIds
+  },
   usersLikedPosts(state, likedPosts) {
-    console.log('likedPosts:' + likedPosts)
     state.usersLikedPosts = likedPosts
   },
 }

@@ -33,14 +33,20 @@ module.exports = {
   head: {
     title: 'SNAP×SNAP',
     htmlAttrs: {
-            prefix: 'og: http://ogp.me/ns#',
+      prefix: 'og: http://ogp.me/ns#',
       lang: lang
     },
     titleTemplate: `%s - ${siteName}`,
     meta: [
       //pwa ios
-      { name: 'apple-mobile-web-app-capable', content: 'yes' },
-      { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
+      {
+        name: 'apple-mobile-web-app-capable',
+        content: 'yes'
+      },
+      {
+        name: 'apple-mobile-web-app-status-bar-style',
+        content: 'black'
+      },
       {
         charset: 'utf-8'
       },
@@ -109,9 +115,13 @@ module.exports = {
         rel: 'icon',
         type: 'image/x-icon',
         href: '/favicon.png'
-        
+
       },
-      { rel: 'apple-touch-icon', sizes: '180x180', href: iconImages + 'apple-touch-icon.png' },
+      {
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        href: iconImages + 'apple-touch-icon.png'
+      },
       // pwa splash screens
       // Doc: https://appsco.pe/developer/splash-screens
       {
@@ -183,8 +193,15 @@ module.exports = {
     {
       src: '@/plugins/vee-validate',
       mode: 'client'
+    },
+    {
+      src: '@/plugins/vue-sliding-pagination',
+      mode: 'client'
+    },
 
-
+    {
+      src: '~/plugins/vuejs-paginate',
+      ssr: false
     },
     {
       src: '~/plugins/moment-filter',
@@ -194,7 +211,7 @@ module.exports = {
     {
       src: '~/plugins/infiniteloading',
       mode: 'client'
-    }
+    },
 
   ],
 
@@ -204,10 +221,10 @@ module.exports = {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: ['@nuxtjs/vuetify', '@nuxtjs/moment',
-  '@nuxtjs/gtm',
+    '@nuxtjs/gtm',
 
-  // '@nuxtjs/google-analytics' 
-],
+    // '@nuxtjs/google-analytics' 
+  ],
   // publicRuntimeConfig: {
   //   googleAnalytics: {
   //     id: process.env.GOOGLE_ANALYTICS_ID
@@ -232,7 +249,7 @@ module.exports = {
   gtm: {
     id: process.env.GTM_ID,
     pageTracking: true,
-     // タグマネージャーのid
+    // タグマネージャーのid
   },
   manifest: {
     name: 'SNAP×SNAP',

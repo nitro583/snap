@@ -32,7 +32,9 @@
     "v-scroll-lock": "^1.3.1",
     "vee-validate": "^3.4.5",
     "vue-infinite-loading": "^2.4.5",
-    "vue-star": "^0.0.4"
+    "vue-sliding-pagination": "^1.3.1",
+    "vue-star": "^0.0.4",
+    "vuejs-paginate": "^2.1.0"
   },
   "devDependencies": {
     "@nuxtjs/moment": "^1.6.1",
