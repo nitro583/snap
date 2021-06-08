@@ -422,8 +422,8 @@ export const actions = {
           
         } else {
           console.log('LikeしているPostがありません')
-          commit('usersLikedPostsIds', null)
-          commit('usersLikedPosts', null)
+          commit('usersLikedPostsIds', '')
+          commit('usersLikedPosts', '')
         }
       })
 
