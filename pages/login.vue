@@ -17,6 +17,7 @@
 </div>
 
   <div class="p-login__form">
+    <p>テストログインできるよう、入力欄の初期値はテストユーザーの情報にしています。</p>
     <form class="form" @submit.prevent>
       <div class="p-login__form__item">
         <div class="p-login__form__left">
@@ -75,9 +76,10 @@ export default {
   },
   data() {
     return {
+      //test login 対応
       errors:[],
-      email: "",
-      password: "",
+      email: "test@test.com",
+      password: "testtest",
       updateName: "",
     };
   },
