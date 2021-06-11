@@ -27,31 +27,9 @@
         </div>
       </div>
     </div>
-    <!-- <button class="c-button p-id__profile__edit__button" @click="count += 6">
-      次へ
-    </button> -->
-    <p>usersLikedPostsIds: {{usersLikedPostsIds.length}}</p>
-    <p>getPageCount : {{getPageCount }}</p>
-    <p>currentPage:{{ currentPage}}</p>
 
-          <h2>Like</h2>
-          <paginate  v-if="(getPageCount > 1)"
-        :page-count="getPageCount"
-        :page-range="3"
-        :margin-pages="2"
-        :click-handler="clickCallback"
-        :prev-text="'前へ'"
-        :next-text="'次へ'"
-        :container-class="'pagination '"
-        :page-class="'pagination-item'"
-        :page-link-class="'pagination-item__link'"
-        :prev-class="'pagination-btn pagination-prev'"
-        :prev-link-class="'pagination-btn__link'"
-        :next-class="'pagination-btn pagination-next'"
-        :next-link-class="'pagination-btn__link'"
-        :hide-prev-next="true"
-        >
-      </paginate>
+          <h2>Like Snaps</h2>
+
 <div class="p-post__content">
       <div
         class="p-post__card"
@@ -120,6 +98,25 @@
         </div>
       </div>
 </div>
+
+<paginate  v-if="(getPageCount > 1)"
+        :page-count="getPageCount"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="clickCallback"
+        :prev-text="'前へ'"
+        :next-text="'次へ'"
+        :container-class="'pagination '"
+        :page-class="'pagination-item'"
+        :page-link-class="'pagination-item__link'"
+        :prev-class="'pagination-btn pagination-prev'"
+        :prev-link-class="'pagination-btn__link'"
+        :next-class="'pagination-btn pagination-next'"
+        :next-link-class="'pagination-btn__link'"
+        :hide-prev-next="true"
+        >
+      </paginate>
+
     <transition name="modal">
       <div
         v-show="showModal"
@@ -281,6 +278,13 @@ export default {
     // this.introduction = this.postUser[0].introduction
   },
   watch: {
+        posts: function(newVal, oldVal) {
+      this.$store.dispatch("login/getUsersLikedPosts", {
+        uid: this.$route.params.id,
+        count: this.currentPage
+      });
+      console.log("変更されました。");
+    },
     likedPosts: function(newVal, oldVal) {
       this.$store.dispatch("login/getUsersLikedPosts", {
         uid: this.$route.params.id,
@@ -407,8 +411,8 @@ export default {
     },
 
     deletePost(index) {
-      console.log(index);
-      this.$store.dispatch("deletePost", this.posts[index].id);
+      console.log('index =>',index);
+      this.$store.dispatch("deletePost", this.usersLikedPosts[index].id);
     },
     endPush() {
       this.isPush = false;
@@ -439,6 +443,10 @@ export default {
 
         clickCallback: function (pageNum) {
       this.currentPage = Number(pageNum);
+      window.scrollTo({
+    top: 500,
+    behavior: "smooth"
+});
     }
   }
 };
