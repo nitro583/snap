@@ -76,8 +76,8 @@ service cloud.firestore {
 
     }
     match /likedUsers/{userId} {
-      allow get: if isAuthenticated();
-      allow list: if isAuthenticated();
+      allow get: if true;
+      allow list: if true;
       allow create: if 
       isAuthenticated()
        &&request.resource.data.keys().hasAll(['uid','createTime']) 
@@ -109,10 +109,15 @@ service cloud.firestore {
       isAuthenticated()
        &&request.resource.data.keys().hasAll(['uid','postId','createTime']) 
        allow update: if true
-      allow delete: if isUserAuthenticated()
+      allow delete: if isAuthenticated();
        
     }
     }
+    
+     match /{path=**}/likedPosts/{postId} {
+      allow read: if true;
+    }
+    
 
   }
 }
