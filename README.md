@@ -43,11 +43,23 @@ SNAP×SNAPというアプリ名は、漫画「HUNTER×HUNTER」に由来しま�
 
 
 ## :rocket: 構成図
+### インフラ構成図
 ![infrastructure](https://user-images.githubusercontent.com/56881735/119627470-3240e000-be47-11eb-87b8-d33c72f2a291.png)
 - App Engine × Nuxt.js でSSR環境を実現しました。
 - Authentification でユーザー認証を実装しました。
 - DB機能としてFirestoreを採用しました。
 - ストレージ機能としてFirestorageを採用しました。
+
+---
+
+### Cloud Firestore　データ構成図
+![Cloud Firestoreの構成](https://user-images.githubusercontent.com/56881735/121709780-deefb280-cb13-11eb-83b5-2bcf3d7fe77b.png)
+- データベースはNoSQLのFirestoreを使用しています。
+- usersにはFirebase Authentificationで取得した情報に加え、introductionとphotoURLを持つようにしています。
+- usersのサブコレクションにはlikedPostsがあり、ユーザーがlikeした投稿をユーザーごとに保持するようにしています。
+- postsには投稿データを保存させており、likeCountも持つことでlikeされている数をすぐに読み出せるようにしています。
+- postsのサブコレクションにcommentsとlikedUsersがあり、コメントやlikeしたユーザーをpostごとに保持するようにしています。
+
 ## :package: 機能
 ### Signup
 ![Signup](https://user-images.githubusercontent.com/56881735/119607473-614b5780-be2f-11eb-9e4f-b3714c4bbec5.gif)
