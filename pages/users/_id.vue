@@ -268,6 +268,7 @@ export default {
   },
   created() {
     // this.$store.dispatch("login/getUser", this.$route.params.id),
+    this.$store.dispatch("getPosts");
     this.$store.dispatch("login/checkLogin");
     this.$store.dispatch("login/getUsersLikedPosts", {
       uid: this.$route.params.id,
